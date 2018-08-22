@@ -1,0 +1,15 @@
+{
+  "name": "@betazuul/button",
+  "version": "0.0.1",
+  "description": "Betazuul React Button",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/betazuul/material-components-react.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@material/button": "^0.38.1"
+  }
+}

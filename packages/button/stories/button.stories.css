@@ -1,0 +1,8 @@
+.demo {
+  width: 400px;
+}
+.demo-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
