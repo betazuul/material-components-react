@@ -1,7 +1,7 @@
 {
   "name": "@betazuul/button",
   "version": "0.0.1",
-  "description": "Betazuul React Button",
+  "description": "Material Component React Button",
   "main": "index.js",
   "repository": {
     "type": "git",
