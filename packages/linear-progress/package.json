@@ -1,0 +1,15 @@
+{
+  "name": "@betazuul/linear-progress",
+  "version": "0.0.1",
+  "description": "Material Component React Linear Progress",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/betazuul/material-components-react.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@material/checkbox": "^0.38.1"
+  }
+}

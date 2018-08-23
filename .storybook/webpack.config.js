@@ -21,6 +21,7 @@ module.exports = (baseConfig, env, defaultConfig) => {
         options: {
           includePaths: [
             path.resolve(__dirname, '../packages/button/node_modules'),
+            path.resolve(__dirname, '../packages/linear-progress/node_modules'),
             path.resolve(__dirname, '../packages/ripple/node_modules')
           ]
         }
