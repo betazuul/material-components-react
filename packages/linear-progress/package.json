@@ -10,6 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@material/checkbox": "^0.38.1"
+    "@material/linear-progress": "^0.38.0"
   }
 }
