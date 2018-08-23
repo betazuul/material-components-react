@@ -44,10 +44,9 @@ const getMaterialExternals = () => {
   return external;
 };
 
-const buildPackage = (filepath, pkg) => {
+const buildPackage = filepath => {
   return Promise.resolve()
     .then(() => {
-      console.log('pkg:', pkg);
       return rimraf(path.resolve(filepath, 'dist'));
     })
     .then(() => {
@@ -93,7 +92,7 @@ const buildPackages = pkg => {
       return;
     }
     console.log(`Building ${pkg}...`);
-    return buildPackage(path.resolve('./packages', pkg), pkg);
+    return buildPackage(path.resolve('./packages', pkg));
   });
 };
 
