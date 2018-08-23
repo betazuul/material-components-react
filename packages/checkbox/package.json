@@ -1,0 +1,16 @@
+{
+  "name": "@betazuul/checkbox",
+  "version": "0.0.1",
+  "description": "Material Component React Checkbox",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/betazuul/material-components-react.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@betazuul/ripple": "^0.0.1",
+    "@material/checkbox": "^0.38.1"
+  }
+}
