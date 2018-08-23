@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+
 import { MDCRippleFoundation, util } from '@material/ripple';
 
 const withRipple = WrappedComponent => {
@@ -8,7 +9,7 @@ const withRipple = WrappedComponent => {
     constructor(props) {
       super(props);
       this.foundation = null;
-      this.mounted = null;
+      this.mounted = true;
       this.state = {
         classList: new Set(),
         style: {}
@@ -30,11 +31,11 @@ const withRipple = WrappedComponent => {
       }
     }
 
-    get classes() {
-      const { className: wrappedCompClasses } = this.props;
-      const { classList } = this.state;
-      return classnames(Array.from(classList), wrappedCompClasses);
-    }
+    initializeFoundation = instance => {
+      const adapter = this.createAdapter(instance);// unnecesary
+      this.foundation = new MDCRippleFoundation(adapter);
+      this.foundation.init();
+    };
 
     createAdapter = instance => {
       const MATCHES = util.getMatchesProperty(HTMLElement.prototype);
@@ -59,15 +60,15 @@ const withRipple = WrappedComponent => {
           classList.delete(className);
           this.setState({ classList });
         },
-        registerDocumentInteractionHandler: (event, handler) =>
+        registerDocumentInteractionHandler: (evtType, handler) =>
           document.documentElement.addEventListener(
-            event,
+            evtType,
             handler,
             util.applyPassive()
           ),
-        deregisterDocumentInteractionHandler: (event, handler) =>
+        deregisterDocumentInteractionHandler: (evtType, handler) =>
           document.documentElement.removeEventListener(
-            event,
+            evtType,
             handler,
             util.applyPassive()
           ),
@@ -76,9 +77,16 @@ const withRipple = WrappedComponent => {
         deregisterResizeHandler: handler =>
           window.removeEventListener('resize', handler),
         updateCssVariable: this.updateCssVariable,
-        computeBoundingRect: this.props.computeBoundingRect
-          ? () => this.props.computeBoundingRect(instance)
-          : () => instance.getBoundingClientRect(),
+        computeBoundingRect: () => {
+          if (!this.mounted) {
+            // need to return object since foundation expects it
+            return {};
+          }
+          if (this.props.computeBoundingRect) {
+            return this.props.computeBoundingRect(instance);
+          }
+          return instance.getBoundingClientRect();
+        },
         getWindowPageOffset: () => ({
           x: window.pageXOffset,
           y: window.pageYOffset
@@ -86,23 +94,11 @@ const withRipple = WrappedComponent => {
       };
     };
 
-    activateRipple = e => {
-      // https://reactjs.org/docs/events.html#event-pooling
-      e.persist();
-      requestAnimationFrame(() => {
-        this.foundation.activate(e);
-      });
-    };
-
-    deactivateRipple = e => {
-      this.foundation.deactivate(e);
-    };
-
-    getMergedStyles = () => {
-      const { style: wrappedStyle } = this.props;
-      const { style } = this.state;
-      return Object.assign({}, style, wrappedStyle);
-    };
+    get classes() {
+      const { className: wrappedCompClasses } = this.props;
+      const { classList } = this.state;
+      return classnames(Array.from(classList), wrappedCompClasses);
+    }
 
     handleFocus = e => {
       this.props.onFocus(e);
@@ -144,10 +140,16 @@ const withRipple = WrappedComponent => {
       this.deactivateRipple(e);
     };
 
-    initializeFoundation = instance => {
-      const adapter = this.createAdapter(instance);
-      this.foundation = new MDCRippleFoundation(adapter);
-      this.foundation.init();
+    activateRipple = e => {
+      // https://reactjs.org/docs/events.html#event-pooling
+      e.persist();
+      requestAnimationFrame(() => {
+        this.foundation.activate(e);
+      });
+    };
+
+    deactivateRipple = e => {
+      this.foundation.deactivate(e);
     };
 
     updateCssVariable = (varName, value) => {
@@ -158,6 +160,12 @@ const withRipple = WrappedComponent => {
       const updatedStyle = Object.assign({}, this.state.style);
       updatedStyle[varName] = value;
       this.setState({ style: updatedStyle });
+    };
+
+    getMergedStyles = () => {
+      const { style: wrappedStyle } = this.props;
+      const { style } = this.state;
+      return Object.assign({}, style, wrappedStyle);
     };
 
     render() {
@@ -237,8 +245,15 @@ const withRipple = WrappedComponent => {
 
   RippledComponent.propTypes = WrappedComponent.propTypes;
   RippledComponent.defaultProps = WrappedComponent.defaultProps;
+  RippledComponent.displayName = `WithRipple(${getDisplayName(
+    WrappedComponent
+  )})`;
 
   return RippledComponent;
 };
+
+function getDisplayName(WrappedComponent) {
+  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
+}
 
 export default withRipple;

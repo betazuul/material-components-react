@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { withRipple } from '../ripple';
+import { withRipple } from '@betazuul/ripple';
 
 export class Button extends Component {
   addClassesToElement(classes, element) {
