@@ -1,0 +1,15 @@
+{
+  "name": "@betazuul/form-field",
+  "version": "0.0.2",
+  "description": "Material Component React Form Field",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/betazuul/material-components-react.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@material/form-field": "^0.38.1"
+  }
+}
