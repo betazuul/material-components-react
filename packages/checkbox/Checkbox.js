@@ -12,13 +12,13 @@ class Checkbox extends React.Component {
     this.checkboxEl = null;
     this.nativeCheckboxEl = null;
     this.state = {
-      classList: new Set(),
-      style: null
+      classList: new Set()
     };
   }
 
   componentDidMount() {
     const { checked, disabled, indeterminate, value } = this.props;
+    
     this.foundation = new MDCCheckboxFoundation(this.adapter);
     this.foundation.init();
     this.foundation.setChecked(checked);
@@ -33,6 +33,7 @@ class Checkbox extends React.Component {
 
   get adapter() {
     const { classList } = this.state;
+
     return {
       addClass: className =>
         this.setState({ classList: classList.add(className) }),
@@ -72,11 +73,15 @@ class Checkbox extends React.Component {
   }
 
   handleLabelClick = e => {
+    if (this.foundation.isDisabled()) return;
+    
     const { onMouseDown, onMouseUp } = this.props;
+    
     onMouseDown(e);
     setTimeout(() => {
       onMouseUp(e);
     }, 100);
+    
     this.foundation.setChecked(!this.foundation.isChecked());
     if (this.foundation.isIndeterminate()) {
       this.foundation.setIndeterminate(false);
@@ -85,6 +90,7 @@ class Checkbox extends React.Component {
 
   initCheckbox = instance => {
     const { initRipple } = this.props;
+
     initRipple(instance);
     this.checkboxEl = instance;
   };
@@ -103,6 +109,7 @@ class Checkbox extends React.Component {
       /* eslint-enable no-unused-vars */
       ...otherProps
     } = this.props;
+
     return (
       <React.Fragment>
         <div className={this.classes} ref={this.initCheckbox} {...otherProps}>
@@ -131,6 +138,7 @@ class Checkbox extends React.Component {
 
   renderInput() {
     const { id, name } = this.props;
+
     return (
       <input
         type="checkbox"
@@ -143,9 +151,16 @@ class Checkbox extends React.Component {
   }
 
   renderLabel() {
-    const { id, label } = this.props;
+    const { disabled, id, label } = this.props;
+
     return label ? (
-      <label htmlFor={id} onClick={this.handleLabelClick}>
+      <label
+        className={classnames('bmc-checkbox-label', {
+          'bmc-checkbox-label--disabled': disabled
+        })}
+        htmlFor={id}
+        onClick={this.handleLabelClick}
+      >
         {label}
       </label>
     ) : null;

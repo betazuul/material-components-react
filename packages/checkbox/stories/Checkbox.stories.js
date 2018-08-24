@@ -1,6 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 
+import { FormField } from '../../form-field';
 import { Checkbox } from '..';
 import '../checkbox.scss';
 
@@ -29,10 +30,13 @@ storiesOf('Checkbox', module)
     />
   ))
   .add('Disabled', () => (
-    <Checkbox
-      id="checkbox-1-id"
-      name="checkbox-1-name"
-      value="checkbox-1-value"
-      disabled
-    />
+    <FormField>
+      <Checkbox
+        id="checkbox-1-id"
+        name="checkbox-1-name"
+        label="My Checkbox"
+        value="checkbox-1-value"
+        disabled
+      />
+    </FormField>
   ));

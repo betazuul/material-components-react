@@ -1,1 +1,7 @@
 @import '@material/checkbox/mdc-checkbox';
+
+.bmc-checkbox-label {
+  &--disabled {
+    color: rgba(0, 0, 0, 0.26);
+  }
+}
