@@ -1,0 +1,7 @@
+@import '@material/radio/mdc-radio';
+
+.bmc-radio-label {
+  &--disabled {
+    color: rgba(0, 0, 0, 0.26);
+  }
+}
