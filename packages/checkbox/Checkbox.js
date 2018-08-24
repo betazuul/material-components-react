@@ -37,7 +37,8 @@ class Checkbox extends React.Component {
       addClass: className =>
         this.setState({ classList: classList.add(className) }),
       removeClass: className => {
-        this.setState({ classList: classList.delete(className) });
+        classList.delete(className);
+        this.setState({ classList });
       },
       setNativeControlAttr: (attr, value) =>
         this.nativeCheckboxEl.setAttribute(attr, value),
@@ -69,6 +70,18 @@ class Checkbox extends React.Component {
 
     return classnames('mdc-checkbox', Array.from(classList), className);
   }
+
+  handleLabelClick = e => {
+    const { onMouseDown, onMouseUp } = this.props;
+    onMouseDown(e);
+    setTimeout(() => {
+      onMouseUp(e);
+    }, 100);
+    this.foundation.setChecked(!this.foundation.isChecked());
+    if (this.foundation.isIndeterminate()) {
+      this.foundation.setIndeterminate(false);
+    }
+  };
 
   initCheckbox = instance => {
     const { initRipple } = this.props;
@@ -131,7 +144,11 @@ class Checkbox extends React.Component {
 
   renderLabel() {
     const { id, label } = this.props;
-    return label ? <label htmlFor={id}>{label}</label> : null;
+    return label ? (
+      <label htmlFor={id} onClick={this.handleLabelClick}>
+        {label}
+      </label>
+    ) : null;
   }
 }
 
