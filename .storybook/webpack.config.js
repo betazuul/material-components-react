@@ -25,7 +25,8 @@ module.exports = (baseConfig, env, defaultConfig) => {
             path.resolve(__dirname, '../packages/form-field/node_modules'),
             path.resolve(__dirname, '../packages/linear-progress/node_modules'),
             path.resolve(__dirname, '../packages/radio/node_modules'),
-            path.resolve(__dirname, '../packages/ripple/node_modules')
+            path.resolve(__dirname, '../packages/ripple/node_modules'),
+            path.resolve(__dirname, '../packages/shape/node_modules')
           ]
         }
       }

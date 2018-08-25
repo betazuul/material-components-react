@@ -1,0 +1,16 @@
+{
+  "name": "@betazuul/shape",
+  "version": "0.0.3",
+  "description": "Material Component React Shape",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/betazuul/material-components-react.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@material/shape": "^0.35.0",
+    "@material/theme": "^0.38.0"
+  }
+}
