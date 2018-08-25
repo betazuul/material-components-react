@@ -1,7 +1,7 @@
 {
-  "name": "@betazuul/checkbox",
+  "name": "@betazuul/icon-button",
   "version": "0.1.0",
-  "description": "Material Component React Checkbox",
+  "description": "Material Component React Icon Button",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -11,6 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "@betazuul/ripple": "^0.1.0",
-    "@material/checkbox": "^0.38.1"
+    "@material/icon-button": "^0.38.1"
   }
 }
