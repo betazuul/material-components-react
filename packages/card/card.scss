@@ -1,0 +1,12 @@
+@import '@material/card/mdc-card';
+
+.bmc-card__content {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  position: relative;
+  outline: none;
+  color: inherit;
+  text-decoration: none;
+  overflow: hidden;
+}

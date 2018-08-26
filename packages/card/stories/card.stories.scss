@@ -1,0 +1,25 @@
+.demo-card {
+  &--simple {
+    height: 200px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__primary {
+    padding: 1rem;
+  }
+
+  &__secondary {
+    padding: 0 1rem 8px;
+    color: var(--mdc-theme-text-secondary-on-background, rgba(0, 0, 0, 0.54));
+  }
+
+  &__title {
+    margin: 0;
+  }
+
+  &__subtitle {
+    color: var(--mdc-theme-text-secondary-on-background, rgba(0, 0, 0, 0.54));
+    margin: 0;
+  }
+}

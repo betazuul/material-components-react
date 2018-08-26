@@ -1,7 +1,7 @@
 {
-  "name": "@betazuul/icon-button",
+  "name": "@betazuul/card",
   "version": "0.2.0",
-  "description": "Material Component React Icon Button",
+  "description": "Material Component React Card",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -11,6 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "@betazuul/ripple": "^0.2.0",
-    "@material/icon-button": "^0.38.1"
+    "@material/card": "^0.38.1"
   }
 }
