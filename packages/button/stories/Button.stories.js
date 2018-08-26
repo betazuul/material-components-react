@@ -4,44 +4,44 @@ import { Button } from '..';
 import '../button.scss';
 import './button.stories.css';
 
-const heartIcon = <i className="material-icons">whatshot</i>;
+const icon = <i className="material-icons">whatshot</i>;
 storiesOf('Button', module)
   .add('Text', () => (
     <div className="demo-button">
-      <Button>Text</Button>
+      <Button>Default</Button>
       <Button dense>Dense</Button>
-      <Button icon={heartIcon}>Icon</Button>
+      <Button icon={icon}>Icon</Button>
     </div>
   ))
   .add('Raised', () => (
     <div className="demo-button">
-      <Button raised>Text</Button>
+      <Button raised>Default</Button>
       <Button raised dense>
         Dense
       </Button>
-      <Button raised icon={heartIcon}>
+      <Button raised icon={icon}>
         Icon
       </Button>
     </div>
   ))
   .add('Unelevated', () => (
     <div className="demo-button">
-      <Button unelevated>Text</Button>
+      <Button unelevated>Default</Button>
       <Button unelevated dense>
         Dense
       </Button>
-      <Button unelevated icon={heartIcon}>
+      <Button unelevated icon={icon}>
         Icon
       </Button>
     </div>
   ))
   .add('Outlined', () => (
     <div className="demo-button">
-      <Button outlined>Text</Button>
+      <Button outlined>Default</Button>
       <Button outlined dense>
         Dense
       </Button>
-      <Button outlined icon={heartIcon}>
+      <Button outlined icon={icon}>
         Icon
       </Button>
     </div>
