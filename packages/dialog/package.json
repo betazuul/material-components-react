@@ -1,7 +1,7 @@
 {
-  "name": "@betazuul/ripple",
+  "name": "@betazuul/dialog",
   "version": "0.3.0",
-  "description": "Material Component React Ripple",
+  "description": "Material Component React Dialog",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@material/ripple": "^0.38.1"
+    "@betazuul/ripple": "^0.3.0",
+    "@material/dialog": "^0.38.2"
   }
 }

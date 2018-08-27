@@ -22,6 +22,7 @@ module.exports = (baseConfig, env, defaultConfig) => {
           includePaths: [
             path.resolve(__dirname, '../packages/button/node_modules'),
             path.resolve(__dirname, '../packages/checkbox/node_modules'),
+            path.resolve(__dirname, '../packages/dialog/node_modules'),
             path.resolve(__dirname, '../packages/form-field/node_modules'),
             path.resolve(__dirname, '../packages/icon-button/node_modules'),
             path.resolve(__dirname, '../packages/linear-progress/node_modules'),
