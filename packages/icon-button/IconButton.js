@@ -9,16 +9,17 @@ class IconButton extends React.Component {
     super(props);
     this.foundation = null;
     this.iconButtonEl = null;
-    this.iconEl = null;
+    this.state = {
+      classList: new Set(),
+    };
   }
 
   componentDidMount() {
-    const { toggle, toggled } = this.props;
-
+    const { iconOn, on } = this.props;
     this.foundation = new MDCIconButtonToggleFoundation(this.adapter);
     this.foundation.init();
 
-    if (toggle && toggled) {
+    if (on && iconOn) {
       this.foundation.toggle();
     }
   }
@@ -28,110 +29,65 @@ class IconButton extends React.Component {
   }
 
   get adapter() {
-    const { onChange, toggleOnClass, toggleOffClass } = this.props;
-
+    const { classList } = this.state;
+    const { onChange } = this.props;
     return {
-      addClass: className => {
-        this.iconEl.classList.add(className);
-        // Hack to get around toggleOnClass not being removed by foundation
-        if (className === toggleOffClass) {
-          this.iconEl.classList.remove(toggleOnClass);
-        }
+      addClass: className => this.setState({ classList: classList.add(className) }),
+      removeClass: (className) => {
+        classList.delete(className);
+        this.setState({ classList });
       },
-      removeClass: className => {
-        this.iconEl.classList.remove(className);
-        // Hack to get around toggleOnClass not being added by foundation
-        if (className === toggleOffClass) {
-          this.iconEl.classList.add(toggleOnClass);
-        }
-      },
-      setText: text => (this.iconEl.textContent = text),
-      getAttr: name => this.iconButtonEl.getAttribute(name),
-      setAttr: (name, value) => this.iconButtonEl.setAttribute(name, value),
-      notifyChange: event => {
+      hasClass: className => this.classes.split(' ').includes(className),
+      setAttr: (attrName, attrValue) => this.iconButtonEl.setAttribute(attrName, attrValue),
+      notifyChange: (event) => {
         if (onChange) onChange(event);
-      }
+      },
     };
   }
 
   get classes() {
+    const { classList } = this.state;
     const { className, material } = this.props;
-
-    return classnames('mdc-icon-button', className, {
-      'material-icons': material,
-      'non-material-icons': !material
+    return classnames('mdc-icon-button', Array.from(classList), className, {
+      'non-material-icons': !material,
     });
   }
 
   handleClick = () => {
-    const { toggle } = this.props;
-
-    if (toggle) {
+    const { iconOn } = this.props;
+    if (iconOn) {
       this.foundation.toggle();
     }
   };
 
-  initIconButtonEl = instance => {
-    const { initRipple, material } = this.props;
-
+  initIconButtonEl = (instance) => {
+    const { initRipple } = this.props;
     initRipple(instance);
     this.iconButtonEl = instance;
-
-    if (material) {
-      this.initIconEl(instance);
-    }
   };
 
-  initIconEl = instance => {
-    this.iconEl = instance;
-  };
+  renderIcon = (icon) => {
+    const { iconOn, material } = this.props;
+    if (!icon) return null;
 
-  validateMaterialIcon = () => {
-    const { children, toggle, toggleOffContent, toggleOnContent } = this.props;
-
-    if (typeof children !== 'string') {
-      throw new Error(
-        '`children` must be a `string` when `material` is `true`'
-      );
+    if (typeof icon === 'string') {
+      const classes = classnames('mdc-icon-button__icon', {
+        'mdc-icon-button__icon--on': icon === iconOn,
+        'material-icons': true,
+      });
+      return <i className={classes}>{icon}</i>;
     }
 
-    if (toggle) {
-      if (!toggleOffContent) {
-        throw new Error(
-          'You must have a string value for `toggleOffContent` when `material` is `true`'
-        );
-      }
-
-      if (!toggleOnContent) {
-        throw new Error(
-          'You must have a string value for `toggleOnContent` when `material` is `true`'
-        );
-      }
-    }
-  };
-
-  validateNonMaterialIcon = () => {
-    const { children, toggle, toggleOffClass, toggleOnClass } = this.props;
-
-    if (children.type !== 'i') {
-      throw new Error(
-        '`children` must NOT be a `string` when `material` is `false`'
-      );
-    }
-
-    if (toggle) {
-      if (!toggleOffClass) {
-        throw new Error(
-          'You must have a string value for `toggleOffClass` when `material` is `false`'
-        );
-      }
-
-      if (!toggleOnClass) {
-        throw new Error(
-          'You must have a string value for `toggleOnClass` when `material` is `false`'
-        );
-      }
-    }
+    const { className, ...otherIconProps } = icon.props;
+    const classes = classnames('mdc-icon-button__icon', className, {
+      'mdc-icon-button__icon--on': icon === iconOn,
+      'material-icons': material,
+    });
+    const iconProps = {
+      className: classes,
+      ...otherIconProps,
+    };
+    return React.cloneElement(icon, iconProps);
   };
 
   render() {
@@ -139,45 +95,25 @@ class IconButton extends React.Component {
       children, // eslint-disable-line no-unused-vars
       className, // eslint-disable-line no-unused-vars
       href,
+      icon,
+      iconOn,
+      iconLabel,
       id,
       initRipple, // eslint-disable-line no-unused-vars
-      material,
-      toggle,
-      toggled, // eslint-disable-line no-unused-vars
-      toggleOffClass,
-      toggleOffContent,
-      toggleOffLabel,
-      toggleOnClass,
-      toggleOnContent,
-      toggleOnLabel,
+      on,
       unbounded, // eslint-disable-line no-unused-vars
       ...otherProps
     } = this.props;
 
-    if (material) {
-      this.validateMaterialIcon();
-    } else {
-      this.validateNonMaterialIcon();
+    let aria = null;
+
+    if (iconOn) {
+      aria = {
+        'aria-label': iconLabel,
+        'aria-hidden': true,
+        'aria-pressed': on,
+      };
     }
-
-    const aria = toggle
-      ? {
-          'aria-label': toggleOffLabel,
-          'aria-hidden': true,
-          'aria-pressed': false
-        }
-      : null;
-
-    const data = toggle
-      ? {
-          'data-toggle-on-class:': toggleOnClass,
-          'data-toggle-on-content': toggleOnContent,
-          'data-toggle-on-label': toggleOnLabel,
-          'data-toggle-off-class': toggleOffClass,
-          'data-toggle-off-content': toggleOffContent,
-          'data-toggle-off-label': toggleOffLabel
-        }
-      : null;
 
     const SemanticButton = href ? 'a' : 'button';
 
@@ -189,28 +125,12 @@ class IconButton extends React.Component {
         onClick={this.handleClick}
         ref={this.initIconButtonEl}
         {...aria}
-        {...data}
         {...otherProps}
       >
-        {this.renderChildren()}
+        {this.renderIcon(icon)}
+        {this.renderIcon(iconOn)}
       </SemanticButton>
     );
-  }
-
-  renderChildren() {
-    const { children, material } = this.props;
-
-    if (material) {
-      return children;
-    }
-
-    return React.Children.map(children, child => {
-      const childProps = {
-        ref: this.initIconEl,
-        ...child.props
-      };
-      return React.cloneElement(child, childProps);
-    });
   }
 }
 
@@ -218,36 +138,27 @@ IconButton.propTypes = {
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
   href: PropTypes.string,
+  icon: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  iconOn: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  iconLabel: PropTypes.string,
   id: PropTypes.string,
   initRipple: PropTypes.func,
+  on: PropTypes.bool,
   material: PropTypes.bool,
-  toggle: PropTypes.bool,
-  toggled: PropTypes.bool,
-  toggleOffClass: PropTypes.string,
-  toggleOffContent: PropTypes.string,
-  toggleOffLabel: PropTypes.string,
-  toggleOnClass: PropTypes.string,
-  toggleOnContent: PropTypes.string,
-  toggleOnLabel: PropTypes.string,
-  unbounded: PropTypes.bool
+  unbounded: PropTypes.bool,
 };
 
 IconButton.defaultProps = {
-  children: null,
   className: null,
   href: null,
+  icon: null,
+  iconOn: null,
+  iconLabel: null,
   id: null,
   initRipple: () => {},
+  on: false,
   material: false,
-  toggle: false,
-  toggled: false,
-  toggleOffClass: null,
-  toggleOffContent: null,
-  toggleOffLabel: null,
-  toggleOnClass: null,
-  toggleOnContent: null,
-  toggleOnLabel: null,
-  unbounded: true
+  unbounded: true,
 };
 
 export default withRipple(IconButton);
