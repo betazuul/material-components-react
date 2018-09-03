@@ -1,6 +1,6 @@
 {
   "name": "@betazuul/checkbox",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Material Component React Checkbox",
   "main": "index.js",
   "repository": {
@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@betazuul/ripple": "^0.3.0",
-    "@material/checkbox": "^0.38.1"
+    "@betazuul/ripple": "^0.4.0",
+    "@material/checkbox": "^0.39.1"
   }
 }

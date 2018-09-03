@@ -1,0 +1,8 @@
+.mdc-drawer__header {
+  background: dodgerblue;
+  color: white;
+}
+
+.drawer-container-flex {
+  display: inline-flex;
+}

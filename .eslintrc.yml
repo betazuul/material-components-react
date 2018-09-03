@@ -1,6 +1,7 @@
 extends:
-  - eslint:recommended
-  - plugin:react/recommended
+  - airbnb
+  # - eslint:recommended
+  # - plugin:react/recommended
 env:
   browser: true
   es6: true
@@ -11,4 +12,5 @@ plugins:
   - jsx-a11y
   - import
 rules:
-  react/prop-types: 0
+  import/no-extraneous-dependencies: 0
+  react/jsx-filename-extension: 0

@@ -1,6 +1,6 @@
 {
   "name": "@betazuul/linear-progress",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Material Component React Linear Progress",
   "main": "index.js",
   "repository": {
@@ -10,6 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@material/linear-progress": "^0.38.0"
+    "@material/linear-progress": "^0.39.1"
   }
 }

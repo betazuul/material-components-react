@@ -1,6 +1,6 @@
 {
   "name": "@betazuul/ripple",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Material Component React Ripple",
   "main": "index.js",
   "repository": {
@@ -10,6 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@material/ripple": "^0.38.1"
+    "@material/ripple": "^0.39.1"
   }
 }
