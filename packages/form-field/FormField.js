@@ -7,7 +7,7 @@ class FormField extends React.Component {
     const { alignEnd, className } = this.props;
 
     return classnames('mdc-form-field', className, {
-      'mdc-form-field--align-end': alignEnd
+      'mdc-form-field--align-end': alignEnd,
     });
   }
 
@@ -32,13 +32,13 @@ class FormField extends React.Component {
 FormField.propTypes = {
   alignEnd: PropTypes.bool,
   children: PropTypes.node,
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 FormField.defaultProps = {
   alignEnd: false,
   children: null,
-  className: null
+  className: null,
 };
 
 export default FormField;
