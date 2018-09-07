@@ -12,22 +12,19 @@ class Dialog extends React.Component {
     this.dialogEl = null;
     this.dialogSurfaceEl = null;
     this.state = {
-      classList: new Set()
+      classList: new Set(),
     };
   }
 
   componentDidMount() {
-    this.focusTrap = util.createFocusTrapInstance(
-      this.dialogSurfaceEl,
-      this.acceptButton
-    );
+    this.focusTrap = util.createFocusTrapInstance(this.dialogSurfaceEl, this.acceptButton);
 
     this.foundation = new MDCDialogFoundation(this.adapter);
     this.foundation.init();
   }
 
   componentDidUpdate(prevProps) {
-    const {open} = this.props;
+    const { open } = this.props;
     if (prevProps.open !== open) {
       if (open) {
         this.foundation.open();
@@ -49,32 +46,30 @@ class Dialog extends React.Component {
     const { classList } = this.state;
 
     return {
-      addClass: className =>
-        this.setState({ classList: classList.add(className) }),
-      removeClass: className => {
+      addClass: className => this.setState({ classList: classList.add(className) }),
+      removeClass: (className) => {
         classList.delete(className);
         this.setState({ classList });
       },
       addBodyClass: className => document.body.classList.add(className),
       removeBodyClass: className => document.body.classList.remove(className),
-      eventTargetHasClass: (target, className) =>
-        target.classList.contains(className),
-      registerInteractionHandler: (event, handler) =>
-        this.dialogEl.addEventListener(event, handler),
-      deregisterInteractionHandler: (event, handler) =>
-        this.dialogEl.removeEventListener(event, handler),
-      registerSurfaceInteractionHandler: (event, handler) =>
-        this.dialogSurfaceEl.addEventListener(event, handler),
-      deregisterSurfaceInteractionHandler: (event, handler) =>
-        this.dialogSurfaceEl.removeEventListener(event, handler),
-      registerDocumentKeydownHandler: handler =>
-        document.addEventListener('keydown', handler),
-      deregisterDocumentKeydownHandler: handler =>
-        document.removeEventListener('keydown', handler),
-      registerTransitionEndHandler: handler =>
-        this.dialogSurfaceEl.addEventListener('transitionend', handler),
-      deregisterTransitionEndHandler: handler =>
-        this.dialogSurfaceEl.removeEventListener('transitionend', handler),
+      eventTargetHasClass: (target, className) => target.classList.contains(className),
+      registerInteractionHandler: (event, handler) => {
+        this.dialogEl.addEventListener(event, handler);
+      },
+      deregisterInteractionHandler: (event, handler) => {
+        this.dialogEl.removeEventListener(event, handler);
+      },
+      registerSurfaceInteractionHandler: (event, handler) => {
+        this.dialogSurfaceEl.addEventListener(event, handler);
+      },
+      deregisterSurfaceInteractionHandler: (event, handler) => {
+        this.dialogSurfaceEl.removeEventListener(event, handler);
+      },
+      registerDocumentKeydownHandler: handler => document.addEventListener('keydown', handler),
+      deregisterDocumentKeydownHandler: handler => document.removeEventListener('keydown', handler),
+      registerTransitionEndHandler: handler => this.dialogSurfaceEl.addEventListener('transitionend', handler),
+      deregisterTransitionEndHandler: handler => this.dialogSurfaceEl.removeEventListener('transitionend', handler),
       notifyAccept: () => {
         const { onAccept } = this.props;
         if (onAccept) {
@@ -89,7 +84,7 @@ class Dialog extends React.Component {
       },
       trapFocusOnSurface: () => this.focusTrap.activate(),
       untrapFocusOnSurface: () => this.focusTrap.deactivate(),
-      isDialog: element => element === this.dialogSurfaceEl
+      isDialog: element => element === this.dialogSurfaceEl,
     };
   }
 
@@ -105,11 +100,11 @@ class Dialog extends React.Component {
     return Object.assign({}, style, propStyle);
   };
 
-  initDialog = instance => {
+  initDialog = (instance) => {
     this.dialogEl = instance;
   };
 
-  initDialogSurface = instance => {
+  initDialogSurface = (instance) => {
     this.dialogSurfaceEl = instance;
   };
 
@@ -131,11 +126,7 @@ class Dialog extends React.Component {
         role="alertdialog"
         style={this.getMergedStyles()}
       >
-        <div
-          className="mdc-dialog__surface"
-          ref={this.initDialogSurface}
-          {...otherProps}
-        >
+        <div className="mdc-dialog__surface" ref={this.initDialogSurface} {...otherProps}>
           {children}
         </div>
         <div className="mdc-dialog__backdrop" />
@@ -149,15 +140,15 @@ Dialog.propTypes = {
   className: PropTypes.string,
   focusTrap: PropTypes.oneOf(['accept', 'cancel']),
   onAccept: PropTypes.func,
-  onCancel: PropTypes.func
+  onCancel: PropTypes.func,
 };
 
-Dialog.defaultTypes = {
+Dialog.defaultProps = {
   children: null,
   className: null,
   focusTrap: 'accept',
   onAccept: () => {},
-  onCancel: () => {}
+  onCancel: () => {},
 };
 
 export default Dialog;
