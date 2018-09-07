@@ -27,6 +27,10 @@ class Drawer extends React.Component {
   componentDidMount() {
     const { type } = this.props;
     const { PERMANENT, DISMISSABLE, MODAL } = strings;
+
+    this.drawerEl.addEventListener('transitionend', this.handleTransitionEnd);
+    this.drawerEl.addEventListener('keydown', this.handleKeydown);
+
     if (type !== PERMANENT) {
       if (type === DISMISSABLE) {
         this.foundation = new MDCDismissibleDrawerFoundation(this.adapter);
@@ -38,8 +42,6 @@ class Drawer extends React.Component {
       }
 
       this.foundation.init();
-      this.drawerEl.addEventListener('keydown', this.handleKeydown);
-      this.drawerEl.addEventListener('transitionend', this.handleTransitionEnd);
     }
   }
 

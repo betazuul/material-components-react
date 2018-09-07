@@ -80,9 +80,7 @@ class DemoDrawer extends React.Component {
         </Drawer>
         {type !== strings.PERMANENT && (
           <div className="mdc-drawer-app-content">
-            <IconButton material onClick={this.handleMenuClick}>
-              menu
-            </IconButton>
+            <IconButton material icon="menu" onClick={this.handleMenuClick} />
           </div>
         )}
       </React.Fragment>
