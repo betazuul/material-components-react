@@ -79,11 +79,6 @@ class Checkbox extends React.Component {
     setTimeout(() => {
       onMouseUp(e);
     }, 100);
-
-    this.foundation.setChecked(!this.foundation.isChecked());
-    if (this.foundation.isIndeterminate()) {
-      this.foundation.setIndeterminate(false);
-    }
   };
 
   initCheckbox = (instance) => {
