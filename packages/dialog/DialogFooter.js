@@ -10,7 +10,7 @@ const DialogFooter = ({
   cancelButton,
   cancelButtonClass,
   cancelButtonLabel,
-  className
+  className,
 }) => {
   const classes = classnames('mdc-dialog__footer', className);
 
@@ -18,24 +18,24 @@ const DialogFooter = ({
     'mdc-button',
     'mdc-dialog__footer__button',
     'mdc-dialog__footer__button--accept',
-    acceptButtonClass
+    acceptButtonClass,
   );
 
   const cancelButtonClasses = classnames(
     'mdc-button',
     'mdc-dialog__footer__button',
     'mdc-dialog__footer__button--cancel',
-    cancelButtonClass
+    cancelButtonClass,
   );
 
-  cancelButtonLabel = alert ? 'Ok' : cancelButtonLabel;
+  const cancelBtnLabel = alert ? 'Ok' : cancelButtonLabel;
 
-  const renderButton = (btn, btnClasses, btnLabel, alert) => {
-    if (alert) return null;
+  const renderButton = (btn, btnClasses, btnLabel, isAlert) => {
+    if (isAlert) return null;
     if (React.isValidElement(btn)) {
       const btnProps = {
         className: btnClasses,
-        ...btn.props
+        ...btn.props,
       };
       return React.cloneElement(btn, btnProps);
     }
@@ -53,37 +53,32 @@ const DialogFooter = ({
 
   return (
     <footer className={classes}>
-      {renderButton(cancelButton, cancelButtonClasses, cancelButtonLabel)}
-      {renderButton(
-        acceptButton,
-        acceptButtonClasses,
-        acceptButtonLabel,
-        alert
-      )}
+      {renderButton(cancelButton, cancelButtonClasses, cancelBtnLabel)}
+      {renderButton(acceptButton, acceptButtonClasses, acceptButtonLabel, alert)}
     </footer>
   );
 };
 
 DialogFooter.propTypes = {
+  alert: PropTypes.bool,
   acceptButton: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
   acceptButtonClass: PropTypes.string,
   acceptButtonLabel: PropTypes.string,
   cancelButton: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
   cancelButtonClass: PropTypes.string,
   cancelButtonLabel: PropTypes.string,
-  children: PropTypes.node,
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 DialogFooter.defaultProps = {
+  alert: false,
   acceptButton: true,
   acceptButtonClass: null,
   acceptButtonLabel: 'Accept',
   cancelButton: true,
   cancelButtonClass: null,
   cancelButtonLabel: 'Decline',
-  children: null,
-  className: null
+  className: null,
 };
 
 export default DialogFooter;

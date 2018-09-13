@@ -4,7 +4,7 @@ import classnames from 'classnames';
 
 import { MDCRippleFoundation, util } from '@material/ripple';
 
-const withRipple = WrappedComponent => {
+const withRipple = (WrappedComponent) => {
   class RippledComponent extends Component {
     constructor(props) {
       super(props);
@@ -12,14 +12,14 @@ const withRipple = WrappedComponent => {
       this.mounted = true;
       this.state = {
         classList: new Set(),
-        style: {}
+        style: {},
       };
     }
 
     componentDidMount() {
       if (!this.foundation) {
         throw new Error(
-          "You must call initRipple from the element's ref prop to initialize the adapter for withRipple"
+          "You must call initRipple from the element's ref prop to initialize the adapter for withRipple",
         );
       }
     }
@@ -31,116 +31,112 @@ const withRipple = WrappedComponent => {
       }
     }
 
-    initializeFoundation = instance => {
-      const adapter = this.createAdapter(instance);// unnecesary
-      this.foundation = new MDCRippleFoundation(adapter);
-      this.foundation.init();
-    };
-
-    createAdapter = instance => {
-      const MATCHES = util.getMatchesProperty(HTMLElement.prototype);
-
-      return {
-        browserSupportsCssVars: () => util.supportsCssVariables(window),
-        isUnbounded: () => this.props.unbounded,
-        isSurfaceActive: () => instance[MATCHES](':active'),
-        isSurfaceDisabled: () => this.props.disabled,
-        addClass: className => {
-          if (!this.mounted) {
-            return;
-          }
-          this.setState({ classList: this.state.classList.add(className) });
-        },
-        removeClass: className => {
-          if (!this.mounted) {
-            return;
-          }
-
-          const { classList } = this.state;
-          classList.delete(className);
-          this.setState({ classList });
-        },
-        registerDocumentInteractionHandler: (evtType, handler) =>
-          document.documentElement.addEventListener(
-            evtType,
-            handler,
-            util.applyPassive()
-          ),
-        deregisterDocumentInteractionHandler: (evtType, handler) =>
-          document.documentElement.removeEventListener(
-            evtType,
-            handler,
-            util.applyPassive()
-          ),
-        registerResizeHandler: handler =>
-          window.addEventListener('resize', handler),
-        deregisterResizeHandler: handler =>
-          window.removeEventListener('resize', handler),
-        updateCssVariable: this.updateCssVariable,
-        computeBoundingRect: () => {
-          if (!this.mounted) {
-            // need to return object since foundation expects it
-            return {};
-          }
-          if (this.props.computeBoundingRect) {
-            return this.props.computeBoundingRect(instance);
-          }
-          return instance.getBoundingClientRect();
-        },
-        getWindowPageOffset: () => ({
-          x: window.pageXOffset,
-          y: window.pageYOffset
-        })
-      };
-    };
-
     get classes() {
       const { className: wrappedCompClasses } = this.props;
       const { classList } = this.state;
       return classnames(Array.from(classList), wrappedCompClasses);
     }
 
-    handleFocus = e => {
-      this.props.onFocus(e);
+    initializeFoundation = (instance) => {
+      const adapter = this.createAdapter(instance); // unnecesary
+      this.foundation = new MDCRippleFoundation(adapter);
+      this.foundation.init();
+    };
+
+    createAdapter = (instance) => {
+      const MATCHES = util.getMatchesProperty(HTMLElement.prototype);
+      const { classList } = this.state;
+      const { unbounded, disabled, computeBoundingRect } = this.props;
+
+      return {
+        browserSupportsCssVars: () => util.supportsCssVariables(window),
+        isUnbounded: () => unbounded,
+        isSurfaceActive: () => instance[MATCHES](':active'),
+        isSurfaceDisabled: () => disabled,
+        addClass: (className) => {
+          if (!this.mounted) {
+            return;
+          }
+          this.setState({ classList: classList.add(className) });
+        },
+        removeClass: (className) => {
+          if (!this.mounted) {
+            return;
+          }
+          classList.delete(className);
+          this.setState({ classList });
+        },
+        registerDocumentInteractionHandler: (evtType, handler) => document.documentElement.addEventListener(evtType, handler, util.applyPassive()),
+        deregisterDocumentInteractionHandler: (evtType, handler) => document.documentElement.removeEventListener(evtType, handler, util.applyPassive()),
+        registerResizeHandler: handler => window.addEventListener('resize', handler),
+        deregisterResizeHandler: handler => window.removeEventListener('resize', handler),
+        updateCssVariable: this.updateCssVariable,
+        computeBoundingRect: () => {
+          if (!this.mounted) {
+            // need to return object since foundation expects it
+            return {};
+          }
+          if (computeBoundingRect) {
+            return computeBoundingRect(instance);
+          }
+          return instance.getBoundingClientRect();
+        },
+        getWindowPageOffset: () => ({
+          x: window.pageXOffset,
+          y: window.pageYOffset,
+        }),
+      };
+    };
+
+    handleFocus = (e) => {
+      const { onFocus } = this.props;
+      onFocus(e);
       this.foundation.handleFocus();
     };
 
-    handleBlur = e => {
-      this.props.onBlur(e);
+    handleBlur = (e) => {
+      const { onBlur } = this.props;
+      onBlur(e);
       this.foundation.handleBlur();
     };
 
-    handleMouseDown = e => {
-      this.props.onMouseDown(e);
+    handleMouseDown = (e) => {
+      const { onMouseDown } = this.props;
+      onMouseDown(e);
       this.activateRipple(e);
     };
 
-    handleMouseUp = e => {
-      this.props.onMouseUp(e);
+    handleMouseUp = (e) => {
+      const { onMouseUp } = this.props;
+      onMouseUp(e);
       this.deactivateRipple(e);
     };
 
-    handleTouchStart = e => {
-      this.props.onTouchStart(e);
+    handleTouchStart = (e) => {
+      const { onTouchStart } = this.props;
+      onTouchStart(e);
       this.activateRipple(e);
     };
 
-    handleTouchEnd = e => {
-      this.props.onTouchEnd(e);
+    handleTouchEnd = (e) => {
+      const { onTouchEnd } = this.props;
+      onTouchEnd(e);
       this.deactivateRipple(e);
     };
 
-    handleKeyDown = e => {
-      this.props.onKeyDown(e);
+    handleKeyDown = (e) => {
+      const { onKeyDown } = this.props;
+      onKeyDown(e);
       this.activateRipple(e);
     };
 
-    handleKeyUp = e => {
-      this.props.onKeyUp(e);
+    handleKeyUp = (e) => {
+      const { onKeyUp } = this.props;
+      onKeyUp(e);
       this.deactivateRipple(e);
     };
 
-    activateRipple = e => {
+    activateRipple = (e) => {
       // https://reactjs.org/docs/events.html#event-pooling
       e.persist();
       requestAnimationFrame(() => {
@@ -148,7 +144,7 @@ const withRipple = WrappedComponent => {
       });
     };
 
-    deactivateRipple = e => {
+    deactivateRipple = (e) => {
       this.foundation.deactivate(e);
     };
 
@@ -157,7 +153,8 @@ const withRipple = WrappedComponent => {
         return;
       }
 
-      const updatedStyle = Object.assign({}, this.state.style);
+      const { style } = this.state;
+      const updatedStyle = Object.assign({}, style);
       updatedStyle[varName] = value;
       this.setState({ style: updatedStyle });
     };
@@ -200,13 +197,14 @@ const withRipple = WrappedComponent => {
         // call initRipple on ref on root element that needs ripple
         initRipple: this.initializeFoundation,
         className: this.classes,
-        style: this.getMergedStyles()
+        style: this.getMergedStyles(),
       });
 
       return <WrappedComponent {...updatedProps} />;
     }
   }
 
+  /* eslint-disable no-param-reassign */
   WrappedComponent.propTypes = Object.assign(
     {
       unbounded: PropTypes.bool,
@@ -220,9 +218,9 @@ const withRipple = WrappedComponent => {
       onKeyDown: PropTypes.func,
       onKeyUp: PropTypes.func,
       onFocus: PropTypes.func,
-      onBlur: PropTypes.func
+      onBlur: PropTypes.func,
     },
-    WrappedComponent.propTypes
+    WrappedComponent.propTypes,
   );
 
   WrappedComponent.defaultProps = Object.assign(
@@ -238,22 +236,19 @@ const withRipple = WrappedComponent => {
       onKeyDown: () => {},
       onKeyUp: () => {},
       onFocus: () => {},
-      onBlur: () => {}
+      onBlur: () => {},
     },
-    WrappedComponent.defaultProps
+    WrappedComponent.defaultProps,
   );
+  /* eslint-enable no-param-reassign */
+
+  const getDisplayName = WrappedComp => WrappedComp.displayName || WrappedComp.name || 'Component';
 
   RippledComponent.propTypes = WrappedComponent.propTypes;
   RippledComponent.defaultProps = WrappedComponent.defaultProps;
-  RippledComponent.displayName = `WithRipple(${getDisplayName(
-    WrappedComponent
-  )})`;
+  RippledComponent.displayName = `WithRipple(${getDisplayName(WrappedComponent)})`;
 
   return RippledComponent;
 };
-
-function getDisplayName(WrappedComponent) {
-  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
-}
 
 export default withRipple;

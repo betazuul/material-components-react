@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
-const CardMediaContent = props => {
+const CardMediaContent = (props) => {
   const { children, className, ...otherProps } = props;
   const classes = classnames('mdc-card__media-content', className);
 
@@ -15,12 +15,12 @@ const CardMediaContent = props => {
 
 CardMediaContent.propTypes = {
   children: PropTypes.node,
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
-CardMediaContent.defaulProps = {
+CardMediaContent.defaultProps = {
   children: null,
-  className: null
+  className: null,
 };
 
 export default CardMediaContent;

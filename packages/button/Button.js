@@ -4,18 +4,24 @@ import PropTypes from 'prop-types';
 import { withRipple } from '@betazuul/ripple';
 
 export class Button extends Component {
-  addClassesToElement(classes, element) {
+  addClassesToElement = (classes, element) => {
     const propsWithClasses = {
-      className: classnames(classes, element.props.className)
+      className: classnames(classes, element.props.className),
     };
     return React.cloneElement(element, propsWithClasses);
+  };
+
+  renderIcon() {
+    const { icon } = this.props;
+    return this.addClassesToElement('mdc-button__icon', icon);
   }
-  
+
   render() {
     const {
       children,
       className,
       dense,
+      href,
       icon,
       initRipple,
       outlined,
@@ -29,22 +35,17 @@ export class Button extends Component {
       'mdc-button--dense': dense,
       'mdc-button--outlined': outlined,
       'mdc-button--raised': raised,
-      'mdc-button--unelevated': unelevated
+      'mdc-button--unelevated': unelevated,
     });
 
-    const SemanticButton = this.props.href ? 'a' : 'button';
+    const SemanticButton = href ? 'a' : 'button';
 
     return (
-      <SemanticButton className={classes} ref={initRipple} {...otherProps}>
+      <SemanticButton className={classes} href={href} ref={initRipple} {...otherProps}>
         {icon ? this.renderIcon() : null}
         {children}
       </SemanticButton>
     );
-  }
-
-  renderIcon() {
-    const { icon } = this.props;
-    return this.addClassesToElement('mdc-button__icon', icon);
   }
 }
 
@@ -59,7 +60,7 @@ Button.propTypes = {
   outlined: PropTypes.bool,
   raised: PropTypes.bool,
   unbounded: PropTypes.bool,
-  unelevated: PropTypes.bool
+  unelevated: PropTypes.bool,
 };
 
 Button.defaultProps = {
@@ -73,7 +74,7 @@ Button.defaultProps = {
   outlined: false,
   raised: false,
   unbounded: false,
-  unelevated: false
+  unelevated: false,
 };
 
 export default withRipple(Button);
