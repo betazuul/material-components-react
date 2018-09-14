@@ -12,10 +12,10 @@ import {
   DrawerListItem,
   DrawerListItemGraphic,
   DrawerListDivider,
-  strings,
+  strings
 } from '..';
 import '../drawer.scss';
-import './drawer.stories.css';
+import './drawer.stories.scss';
 
 import { IconButton } from '../../icon-button';
 
@@ -27,12 +27,12 @@ const list = [
   { divider: true },
   { graphic: 'email', text: 'All Mail' },
   { graphic: 'delete', text: 'Trash' },
-  { graphic: 'report', text: 'Spam' },
+  { graphic: 'report', text: 'Spam' }
 ];
 
 class DemoDrawer extends React.Component {
   state = {
-    open: false,
+    open: false
   };
 
   handleMenuClick = () => {
@@ -64,16 +64,22 @@ class DemoDrawer extends React.Component {
           <DrawerContent>
             <DrawerList>
               {list.map(
-                item => (item.divider ? (
-                  <DrawerListDivider key={item.text} />
-                ) : (
-                  <DrawerListItem onClick={this.handleListItemClick} key={item.text}>
-                    {item.graphic && (
-                    <DrawerListItemGraphic icon>{item.graphic}</DrawerListItemGraphic>
-                    )}
-                    {item.text}
-                  </DrawerListItem>
-                )),
+                item =>
+                  item.divider ? (
+                    <DrawerListDivider key={item.text} />
+                  ) : (
+                    <DrawerListItem
+                      onClick={this.handleListItemClick}
+                      key={item.text}
+                    >
+                      {item.graphic && (
+                        <DrawerListItemGraphic icon>
+                          {item.graphic}
+                        </DrawerListItemGraphic>
+                      )}
+                      {item.text}
+                    </DrawerListItem>
+                  )
               )}
             </DrawerList>
           </DrawerContent>
@@ -87,11 +93,13 @@ class DemoDrawer extends React.Component {
     );
   }
 }
+
 DemoDrawer.propTypes = {
-  type: PropTypes.oneOf([strings.PERMANENT, strings.DISMISSABLE, strings.MODAL]),
+  type: PropTypes.oneOf([strings.PERMANENT, strings.DISMISSABLE, strings.MODAL])
 };
+
 DemoDrawer.defaultProps = {
-  type: strings.PERMANENT,
+  type: strings.PERMANENT
 };
 
 storiesOf('Drawer', module)

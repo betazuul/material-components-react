@@ -15,11 +15,11 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "babel-runtime": "^6.26.0",
-    "css-loader": "^1.0.0",
+    "css-loader": "^0.28.11",
     "denodeify": "^1.2.1",
     "eslint": "^5.4.0",
     "eslint-config-airbnb": "^17.1.0",
-    "eslint-config-react": "^1.1.7",
+    "eslint-config-prettier": "^3.0.1",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-react": "^7.11.1",
@@ -37,7 +37,9 @@
     "rollup-plugin-commonjs": "^9.1.5",
     "rollup-plugin-local-resolve": "^1.0.7",
     "rollup-plugin-node-resolve": "^3.3.0",
-    "sass-loader": "^7.1.0"
+    "sass-loader": "^7.1.0",
+    "stylelint": "^9.5.0",
+    "stylelint-config-prettier": "^4.0.0"
   },
   "scripts": {
     "build": "node build.js",

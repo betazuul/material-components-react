@@ -12,7 +12,7 @@ const Shape = props => {
     bottomLeft
   } = props;
   const classes = classnames('mdc-shape-container', className);
-  
+
   const renderCorner = corner =>
     (topLeft && corner === 'top-left') ||
     (topRight && corner === 'top-right') ||

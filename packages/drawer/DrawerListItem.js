@@ -15,14 +15,20 @@ const DrawerListItem = ({
 }) => {
   const classes = classnames('mdc-list-item', className, {
     'mdc-list-item--activated': activated,
-    'mdc-list-item--selected': selected,
+    'mdc-list-item--selected': selected
   });
   const aria = {
-    'aria-selected': selected ? true : null,
+    'aria-selected': selected ? true : null
   };
   const SemanticListItem = href ? 'a' : 'nav';
   return (
-    <SemanticListItem className={classes} href={href} ref={initRipple} {...aria} {...otherProps}>
+    <SemanticListItem
+      className={classes}
+      href={href}
+      ref={initRipple}
+      {...aria}
+      {...otherProps}
+    >
       {children}
     </SemanticListItem>
   );
@@ -35,7 +41,7 @@ DrawerListItem.propTypes = {
   href: PropTypes.string,
   initRipple: PropTypes.func,
   selected: PropTypes.bool,
-  unbounded: PropTypes.bool,
+  unbounded: PropTypes.bool
 };
 
 DrawerListItem.defaultProps = {
@@ -45,7 +51,7 @@ DrawerListItem.defaultProps = {
   href: null,
   initRipple: () => {},
   selected: false,
-  unbounded: false,
+  unbounded: false
 };
 
 export default withRipple(DrawerListItem);

@@ -3,9 +3,7 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { withRipple } from '../ripple';
 
-const CardContent = (props) => {
-  const { action, children, ...otherProps } = props;
-
+const CardContent = ({ action, children, ...otherProps }) => {
   if (action) {
     return (
       <CardPrimaryAction action {...otherProps}>
@@ -17,12 +15,15 @@ const CardContent = (props) => {
   return <CardContentDefault {...otherProps}>{children}</CardContentDefault>;
 };
 
-const CardContentDefault = (props) => {
-  const {
-    action, children, className, initRipple, ...otherProps
-  } = props;
+const CardContentDefault = ({
+  action,
+  children,
+  className,
+  initRipple,
+  ...otherProps
+}) => {
   const classes = classnames('bmc-card__content', className, {
-    'mdc-card__primary-action': action,
+    'mdc-card__primary-action': action
   });
 
   return (
@@ -36,26 +37,26 @@ const CardPrimaryAction = withRipple(CardContentDefault);
 
 CardContent.propTypes = {
   action: PropTypes.bool,
-  children: PropTypes.node,
+  children: PropTypes.node
 };
 
 CardContent.defaultProps = {
   action: false,
-  children: null,
+  children: null
 };
 
 CardContentDefault.propTypes = {
   action: PropTypes.bool,
   children: PropTypes.node,
   className: PropTypes.string,
-  initRipple: PropTypes.func,
+  initRipple: PropTypes.func
 };
 
 CardContentDefault.defaultProps = {
   action: false,
   children: null,
   className: null,
-  initRipple: () => {},
+  initRipple: () => {}
 };
 
 export default CardContent;

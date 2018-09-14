@@ -9,12 +9,12 @@ const DrawerHeaderSubtitle = ({ children, className }) => {
 
 DrawerHeaderSubtitle.propTypes = {
   children: PropTypes.node,
-  className: PropTypes.string,
+  className: PropTypes.string
 };
 
 DrawerHeaderSubtitle.defaultProps = {
   children: null,
-  className: null,
+  className: null
 };
 
 export default DrawerHeaderSubtitle;

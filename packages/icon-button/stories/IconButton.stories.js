@@ -23,7 +23,9 @@ storiesOf('Icon Button', module)
       on
     />
   ))
-  .add('Font Awesome', () => <IconButton icon={<i className="far fa-star" />} />)
+  .add('Font Awesome', () => (
+    <IconButton icon={<i className="far fa-star" />} />
+  ))
   .add('Font Awesome Toggle', () => (
     <IconButton
       icon={<i className="far fa-star" />}

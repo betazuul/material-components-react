@@ -12,18 +12,16 @@ class Checkbox extends React.Component {
     this.checkboxEl = null;
     this.nativeCheckboxEl = null;
     this.state = {
-      classList: new Set(),
+      classList: new Set()
     };
   }
 
   componentDidMount() {
-    const {
-      checked, disabled, indeterminate, value,
-    } = this.props;
+    const { checked, disabled, indeterminate, value } = this.props;
 
     this.checkboxEl.addEventListener(
       getCorrectEventName(window, 'animationend'),
-      this.handleAnimationEnd,
+      this.handleAnimationEnd
     );
     this.nativeCheckboxEl.addEventListener('change', this.handleChange);
 
@@ -42,16 +40,19 @@ class Checkbox extends React.Component {
   get adapter() {
     const { classList } = this.state;
     return {
-      addClass: className => this.setState({ classList: classList.add(className) }),
-      removeClass: (className) => {
+      addClass: className =>
+        this.setState({ classList: classList.add(className) }),
+      removeClass: className => {
         classList.delete(className);
         this.setState({ classList });
       },
-      setNativeControlAttr: (attr, value) => this.nativeCheckboxEl.setAttribute(attr, value),
-      removeNativeControlAttr: attr => this.nativeCheckboxEl.removeAttribute(attr),
+      setNativeControlAttr: (attr, value) =>
+        this.nativeCheckboxEl.setAttribute(attr, value),
+      removeNativeControlAttr: attr =>
+        this.nativeCheckboxEl.removeAttribute(attr),
       getNativeControl: () => this.nativeCheckboxEl,
       forceLayout: () => this.checkboxEl.offsetWidth,
-      isAttachedToDOM: () => Boolean(this.checkboxEl.parentNode),
+      isAttachedToDOM: () => Boolean(this.checkboxEl.parentNode)
     };
   }
 
@@ -70,7 +71,7 @@ class Checkbox extends React.Component {
     this.foundation.handleAnimationEnd();
   };
 
-  handleLabelClick = (e) => {
+  handleLabelClick = e => {
     if (this.foundation.isDisabled()) return;
 
     const { onMouseDown, onMouseUp } = this.props;
@@ -81,14 +82,14 @@ class Checkbox extends React.Component {
     }, 100);
   };
 
-  initCheckbox = (instance) => {
+  initCheckbox = instance => {
     const { initRipple } = this.props;
 
     initRipple(instance);
     this.checkboxEl = instance;
   };
 
-  initNativeCheckbox = (instance) => {
+  initNativeCheckbox = instance => {
     this.nativeCheckboxEl = instance;
   };
 
@@ -122,7 +123,7 @@ class Checkbox extends React.Component {
     const { disabled, id, label } = this.props;
     if (label) {
       const classes = classnames('bmc-checkbox-label', {
-        'bmc-checkbox-label--disabled': disabled,
+        'bmc-checkbox-label--disabled': disabled
       });
       return (
         <label className={classes} htmlFor={id} onClick={this.handleLabelClick}>
@@ -172,7 +173,7 @@ Checkbox.propTypes = {
   label: PropTypes.string,
   name: PropTypes.string.isRequired,
   unbounded: PropTypes.bool,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired
 };
 
 Checkbox.defaultProps = {
@@ -181,7 +182,7 @@ Checkbox.defaultProps = {
   indeterminate: false,
   initRipple: () => {},
   label: null,
-  unbounded: true,
+  unbounded: true
 };
 
 export default withRipple(Checkbox);

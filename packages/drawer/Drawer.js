@@ -1,7 +1,11 @@
 import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { MDCDismissibleDrawerFoundation, MDCModalDrawerFoundation, util } from '@material/drawer';
+import {
+  MDCDismissibleDrawerFoundation,
+  MDCModalDrawerFoundation,
+  util
+} from '@material/drawer';
 import { cssClasses } from '@material/drawer/constants';
 import createFocusTrap from 'focus-trap';
 
@@ -9,7 +13,7 @@ const strings = {
   PERMANENT: 'permanent',
   DISMISSABLE: 'dismissable',
   MODAL: 'modal',
-  LIST_ITEM_ACTIVATED_SELECTOR: '.mdc-list-item--activated',
+  LIST_ITEM_ACTIVATED_SELECTOR: '.mdc-list-item--activated'
 };
 
 class Drawer extends React.Component {
@@ -20,7 +24,7 @@ class Drawer extends React.Component {
     this.focusTrap = null;
     this.previousFocus = null;
     this.state = {
-      classList: new Set(),
+      classList: new Set()
     };
   }
 
@@ -38,7 +42,10 @@ class Drawer extends React.Component {
 
       if (type === MODAL) {
         this.foundation = new MDCModalDrawerFoundation(this.adapter);
-        this.focusTrap = util.createFocusTrapInstance(this.drawerEl, createFocusTrap);
+        this.focusTrap = util.createFocusTrapInstance(
+          this.drawerEl,
+          createFocusTrap
+        );
       }
 
       this.foundation.init();
@@ -65,7 +72,10 @@ class Drawer extends React.Component {
     const { type } = this.props;
     if (type !== strings.PERMANENT) {
       this.drawerEl.removeEventListener('keydown', this.handleKeydown);
-      this.drawerEl.removeEventListener('transitionend', this.handleTransitionEnd);
+      this.drawerEl.removeEventListener(
+        'transitionend',
+        this.handleTransitionEnd
+      );
       this.foundation.destroy();
     }
   }
@@ -73,18 +83,11 @@ class Drawer extends React.Component {
   get adapter() {
     const { onClose, onOpen } = this.props;
     return {
-      addClass: (className) => {
-        this.drawerEl.classList.add(className);
-      },
-      removeClass: (className) => {
-        this.drawerEl.classList.remove(className);
-      },
-      hasClass: (className) => {
-        this.drawerEl.classList.contains(className);
-      },
-      elementHasClass: (element, className) => {
-        element.classList.contains(className);
-      },
+      addClass: className => this.drawerEl.classList.add(className),
+      removeClass: className => this.drawerEl.classList.remove(className),
+      hasClass: className => this.drawerEl.classList.contains(className),
+      elementHasClass: (element, className) =>
+        element.classList.contains(className),
       computeBoundingRect: () => this.drawerEl.getBoundingClientRect(),
       saveFocus: () => {
         this.previousFocus = document.activeElement;
@@ -96,7 +99,9 @@ class Drawer extends React.Component {
         }
       },
       focusActiveNavigationItem: () => {
-        const activeNavItemEl = this.drawerEl.querySelector(strings.LIST_ITEM_ACTIVATED_SELECTOR);
+        const activeNavItemEl = this.drawerEl.querySelector(
+          strings.LIST_ITEM_ACTIVATED_SELECTOR
+        );
         if (activeNavItemEl) {
           activeNavItemEl.focus();
         }
@@ -108,7 +113,7 @@ class Drawer extends React.Component {
         if (onOpen) onOpen();
       },
       trapFocus: () => this.focusTrap.activate(),
-      releaseFocus: () => this.focusTrap.deactivate(),
+      releaseFocus: () => this.focusTrap.deactivate()
     };
   }
 
@@ -118,11 +123,11 @@ class Drawer extends React.Component {
     const { DISMISSABLE, MODAL } = strings;
     return classnames('mdc-drawer', Array.from(classList), className, {
       'mdc-drawer--dismissible': type === DISMISSABLE,
-      'mdc-drawer--modal': type === MODAL,
+      'mdc-drawer--modal': type === MODAL
     });
   }
 
-  handleKeydown = (event) => {
+  handleKeydown = event => {
     if (this.foundation) this.foundation.handleKeydown(event);
   };
 
@@ -132,13 +137,11 @@ class Drawer extends React.Component {
     if (this.foundation) this.foundation.handleScrimClick();
   };
 
-  handleTransitionEnd = (event) => {
+  handleTransitionEnd = event => {
     if (this.foundation) {
       this.foundation.handleTransitionEnd(event);
       // Hack to remove all unnecessary animation classes
-      const {
-        ANIMATE, CLOSING, OPEN, OPENING,
-      } = cssClasses;
+      const { ANIMATE, CLOSING, OPEN, OPENING } = cssClasses;
       if (this.drawerEl.classList.contains(CLOSING)) {
         this.adapter.removeClass(OPEN);
         this.adapter.releaseFocus();
@@ -151,7 +154,7 @@ class Drawer extends React.Component {
     }
   };
 
-  initDrawer = (instance) => {
+  initDrawer = instance => {
     this.drawerEl = instance;
   };
 
@@ -185,7 +188,7 @@ Drawer.propTypes = {
   open: PropTypes.bool,
   onOpen: PropTypes.func,
   onClose: PropTypes.func,
-  type: PropTypes.oneOf([strings.PERMANENT, strings.DISMISSABLE, strings.MODAL]),
+  type: PropTypes.oneOf([strings.PERMANENT, strings.DISMISSABLE, strings.MODAL])
 };
 
 Drawer.defaultProps = {
@@ -194,7 +197,7 @@ Drawer.defaultProps = {
   open: false,
   onOpen: PropTypes.func,
   onClose: PropTypes.func,
-  type: strings.PERMANENT,
+  type: strings.PERMANENT
 };
 
 export default Drawer;

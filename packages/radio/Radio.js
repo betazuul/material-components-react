@@ -11,7 +11,7 @@ class Radio extends React.Component {
     this.radioEl = null;
     this.nativeRadioEl = null;
     this.state = {
-      classList: new Set(),
+      classList: new Set()
     };
   }
 
@@ -33,12 +33,13 @@ class Radio extends React.Component {
     const { classList } = this.state;
 
     return {
-      addClass: className => this.setState({ classList: classList.add(className) }),
-      removeClass: (className) => {
+      addClass: className =>
+        this.setState({ classList: classList.add(className) }),
+      removeClass: className => {
         classList.delete(className);
         this.setState({ classList });
       },
-      getNativeControl: () => this.nativeRadioEl,
+      getNativeControl: () => this.nativeRadioEl
     };
   }
 
@@ -49,7 +50,7 @@ class Radio extends React.Component {
     return classnames('mdc-radio', Array.from(classList), className);
   }
 
-  handleLabelClick = (e) => {
+  handleLabelClick = e => {
     if (this.foundation.isDisabled()) return;
 
     const { onMouseDown, onMouseUp } = this.props;
@@ -64,13 +65,13 @@ class Radio extends React.Component {
     }
   };
 
-  initRadio = (instance) => {
+  initRadio = instance => {
     const { initRipple } = this.props;
     initRipple(instance);
     this.radioEl = instance;
   };
 
-  initNativeRadio = (instance) => {
+  initNativeRadio = instance => {
     this.nativeRadioEl = instance;
   };
 
@@ -94,7 +95,7 @@ class Radio extends React.Component {
     return label ? (
       <label
         className={classnames('bmc-radio-label', {
-          'bmc-radio-label--disabled': disabled,
+          'bmc-radio-label--disabled': disabled
         })}
         htmlFor={id}
         onClick={this.handleLabelClick}
@@ -143,7 +144,7 @@ Radio.propTypes = {
   label: PropTypes.string,
   name: PropTypes.string.isRequired,
   unbounded: PropTypes.bool,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired
 };
 
 Radio.defaultProps = {
@@ -151,7 +152,7 @@ Radio.defaultProps = {
   disabled: false,
   initRipple: () => {},
   label: null,
-  unbounded: true,
+  unbounded: true
 };
 
 export default withRipple(Radio);

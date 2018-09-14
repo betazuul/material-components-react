@@ -2,19 +2,23 @@ import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
-const CardMedia = (props) => {
-  const {
-    children, className, imageUrl, square, style, wide, ...otherProps
-  } = props;
-
+const CardMedia = ({
+  children,
+  className,
+  imageUrl,
+  square,
+  style,
+  wide,
+  ...otherProps
+}) => {
   const classes = classnames('mdc-card__media', className, {
     'mdc-card__media--square': square,
-    'mdc-card__media--16-9': wide,
+    'mdc-card__media--16-9': wide
   });
 
   const getMergedStyles = () => ({
     backgroundImage: imageUrl ? `url(${imageUrl})` : null,
-    ...style,
+    ...style
   });
 
   return (
@@ -30,7 +34,7 @@ CardMedia.propTypes = {
   imageUrl: PropTypes.string,
   square: PropTypes.bool,
   style: PropTypes.objectOf(PropTypes.any),
-  wide: PropTypes.bool,
+  wide: PropTypes.bool
 };
 
 CardMedia.defaultProps = {
@@ -39,7 +43,7 @@ CardMedia.defaultProps = {
   imageUrl: null,
   square: false,
   style: null,
-  wide: false,
+  wide: false
 };
 
 export default CardMedia;

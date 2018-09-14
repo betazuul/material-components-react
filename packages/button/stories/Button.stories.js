@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { Button } from '..';
 import '../button.scss';
-import './button.stories.css';
+import './button.stories.scss';
 
 const icon = <i className="material-icons">whatshot</i>;
 storiesOf('Button', module)

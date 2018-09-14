@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const DrawerListItemGraphic = ({ icon, className, children }) => {
   const classes = classnames('mdc-list-item__graphic', className, {
-    'material-icons': icon,
+    'material-icons': icon
   });
   return (
     <span className={classes} aria-hidden="true">
@@ -16,13 +16,13 @@ const DrawerListItemGraphic = ({ icon, className, children }) => {
 DrawerListItemGraphic.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
-  icon: PropTypes.bool,
+  icon: PropTypes.bool
 };
 
 DrawerListItemGraphic.defaultProps = {
   children: null,
   className: null,
-  icon: false,
+  icon: false
 };
 
 export default DrawerListItemGraphic;

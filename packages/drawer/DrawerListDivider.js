@@ -2,16 +2,14 @@ import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
-const DrawerListDivider = ({
-  children, className, hr, inset, padded,
-}) => {
+const DrawerListDivider = ({ children, className, hr, inset, padded }) => {
   const classes = classnames('mdc-list-divider', className, {
     'mdc-list-divider--inset': inset,
-    'mdc-list-divider--padded': padded,
+    'mdc-list-divider--padded': padded
   });
 
   const role = {
-    role: hr ? null : 'separator',
+    role: hr ? null : 'separator'
   };
 
   const SemanticDivider = hr ? 'hr' : 'li';
@@ -28,7 +26,7 @@ DrawerListDivider.propTypes = {
   className: PropTypes.string,
   hr: PropTypes.bool,
   inset: PropTypes.bool,
-  padded: PropTypes.bool,
+  padded: PropTypes.bool
 };
 
 DrawerListDivider.defaultProps = {
@@ -36,7 +34,7 @@ DrawerListDivider.defaultProps = {
   className: null,
   hr: false,
   inset: false,
-  padded: false,
+  padded: false
 };
 
 export default DrawerListDivider;

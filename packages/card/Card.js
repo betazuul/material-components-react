@@ -2,12 +2,9 @@ import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
-const Card = (props) => {
-  const {
-    children, className, outlined, ...otherProps
-  } = props;
+const Card = ({ children, className, outlined, ...otherProps }) => {
   const classes = classnames('mdc-card', className, {
-    'mdc-card--outlined': outlined,
+    'mdc-card--outlined': outlined
   });
 
   return (
@@ -20,13 +17,13 @@ const Card = (props) => {
 Card.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
-  outlined: PropTypes.bool,
+  outlined: PropTypes.bool
 };
 
 Card.defaultProps = {
   children: null,
   className: null,
-  outlined: false,
+  outlined: false
 };
 
 export default Card;

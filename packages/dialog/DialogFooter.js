@@ -10,7 +10,7 @@ const DialogFooter = ({
   cancelButton,
   cancelButtonClass,
   cancelButtonLabel,
-  className,
+  className
 }) => {
   const classes = classnames('mdc-dialog__footer', className);
 
@@ -18,14 +18,14 @@ const DialogFooter = ({
     'mdc-button',
     'mdc-dialog__footer__button',
     'mdc-dialog__footer__button--accept',
-    acceptButtonClass,
+    acceptButtonClass
   );
 
   const cancelButtonClasses = classnames(
     'mdc-button',
     'mdc-dialog__footer__button',
     'mdc-dialog__footer__button--cancel',
-    cancelButtonClass,
+    cancelButtonClass
   );
 
   const cancelBtnLabel = alert ? 'Ok' : cancelButtonLabel;
@@ -35,7 +35,7 @@ const DialogFooter = ({
     if (React.isValidElement(btn)) {
       const btnProps = {
         className: btnClasses,
-        ...btn.props,
+        ...btn.props
       };
       return React.cloneElement(btn, btnProps);
     }
@@ -54,7 +54,12 @@ const DialogFooter = ({
   return (
     <footer className={classes}>
       {renderButton(cancelButton, cancelButtonClasses, cancelBtnLabel)}
-      {renderButton(acceptButton, acceptButtonClasses, acceptButtonLabel, alert)}
+      {renderButton(
+        acceptButton,
+        acceptButtonClasses,
+        acceptButtonLabel,
+        alert
+      )}
     </footer>
   );
 };
@@ -67,7 +72,7 @@ DialogFooter.propTypes = {
   cancelButton: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
   cancelButtonClass: PropTypes.string,
   cancelButtonLabel: PropTypes.string,
-  className: PropTypes.string,
+  className: PropTypes.string
 };
 
 DialogFooter.defaultProps = {
@@ -78,7 +83,7 @@ DialogFooter.defaultProps = {
   cancelButton: true,
   cancelButtonClass: null,
   cancelButtonLabel: 'Decline',
-  className: null,
+  className: null
 };
 
 export default DialogFooter;

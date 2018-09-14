@@ -6,7 +6,7 @@ import { withRipple } from '@betazuul/ripple';
 export class Button extends Component {
   addClassesToElement = (classes, element) => {
     const propsWithClasses = {
-      className: classnames(classes, element.props.className),
+      className: classnames(classes, element.props.className)
     };
     return React.cloneElement(element, propsWithClasses);
   };
@@ -35,13 +35,18 @@ export class Button extends Component {
       'mdc-button--dense': dense,
       'mdc-button--outlined': outlined,
       'mdc-button--raised': raised,
-      'mdc-button--unelevated': unelevated,
+      'mdc-button--unelevated': unelevated
     });
 
     const SemanticButton = href ? 'a' : 'button';
 
     return (
-      <SemanticButton className={classes} href={href} ref={initRipple} {...otherProps}>
+      <SemanticButton
+        className={classes}
+        href={href}
+        ref={initRipple}
+        {...otherProps}
+      >
         {icon ? this.renderIcon() : null}
         {children}
       </SemanticButton>
@@ -60,7 +65,7 @@ Button.propTypes = {
   outlined: PropTypes.bool,
   raised: PropTypes.bool,
   unbounded: PropTypes.bool,
-  unelevated: PropTypes.bool,
+  unelevated: PropTypes.bool
 };
 
 Button.defaultProps = {
@@ -74,7 +79,7 @@ Button.defaultProps = {
   outlined: false,
   raised: false,
   unbounded: false,
-  unelevated: false,
+  unelevated: false
 };
 
 export default withRipple(Button);

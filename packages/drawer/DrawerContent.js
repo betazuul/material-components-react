@@ -9,12 +9,12 @@ const DrawerContent = ({ children, className }) => {
 
 DrawerContent.propTypes = {
   children: PropTypes.node,
-  className: PropTypes.string,
+  className: PropTypes.string
 };
 
 DrawerContent.defaultProps = {
   children: null,
-  className: null,
+  className: null
 };
 
 export default DrawerContent;

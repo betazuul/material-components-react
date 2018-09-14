@@ -2,12 +2,9 @@ import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
-const CardActions = (props) => {
-  const {
-    children, className, full, ...otherProps
-  } = props;
+const CardActions = ({ children, className, full, ...otherProps }) => {
   const classes = classnames('mdc-card__actions', className, {
-    'mdc-card__actions--full-bleed': full,
+    'mdc-card__actions--full-bleed': full
   });
 
   return (
@@ -20,13 +17,13 @@ const CardActions = (props) => {
 CardActions.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
-  full: PropTypes.bool,
+  full: PropTypes.bool
 };
 
 CardActions.defaultProps = {
   children: null,
   className: null,
-  full: false,
+  full: false
 };
 
 export default CardActions;

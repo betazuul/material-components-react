@@ -21,6 +21,7 @@ module.exports = (baseConfig, env, defaultConfig) => {
         options: {
           includePaths: [
             path.resolve(__dirname, '../packages/button/node_modules'),
+            path.resolve(__dirname, '../packages/card/node_modules'),
             path.resolve(__dirname, '../packages/checkbox/node_modules'),
             path.resolve(__dirname, '../packages/dialog/node_modules'),
             path.resolve(__dirname, '../packages/drawer/node_modules'),

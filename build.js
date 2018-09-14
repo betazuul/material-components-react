@@ -42,60 +42,68 @@ const getMaterialExternals = () => {
     'textfield',
     'theme',
     'top-app-bar',
-    'typography',
-  ].forEach((name) => {
+    'typography'
+  ].forEach(name => {
     const fileName = `@material/${name}`;
     external.push(fileName);
   });
   return external;
 };
 
-const buildPackage = filepath => Promise.resolve()
-  .then(() => rimraf(path.resolve(filepath, 'dist')))
-  .then(() => mkdirp(path.resolve(filepath, 'dist')))
-  .then(() => rollup({
-    input: path.resolve(filepath, './index.js'),
-    plugins: [
-      babel({
-        exclude: 'node_modules/**', // only transpile our source code
-      }),
-      localResolve(),
-      resolve(),
-      commonjs(),
-    ],
-    external: commonExternals.concat(getMaterialExternals()),
-  }).then((bundle) => {
-    const formats = ['cjs', 'es'];
-    return all(
-      formats.map((format) => {
-        const file = `dist/index${format === 'es' ? '.es.js' : '.js'}`;
-        return bundle
-          .write({
-            file: path.resolve(filepath, file),
-            format,
+const buildPackage = filepath =>
+  Promise.resolve()
+    .then(() => rimraf(path.resolve(filepath, 'dist')))
+    .then(() => mkdirp(path.resolve(filepath, 'dist')))
+    .then(() =>
+      rollup({
+        input: path.resolve(filepath, './index.js'),
+        plugins: [
+          babel({
+            exclude: 'node_modules/**' // only transpile our source code
+          }),
+          localResolve(),
+          resolve(),
+          commonjs()
+        ],
+        external: commonExternals.concat(getMaterialExternals())
+      }).then(bundle => {
+        const formats = ['cjs', 'es'];
+        return all(
+          formats.map(format => {
+            const file = `dist/index${format === 'es' ? '.es.js' : '.js'}`;
+            return bundle
+              .write({
+                file: path.resolve(filepath, file),
+                format
+              })
+              .then(() => {
+                console.log(
+                  `  \u2713 wrote ${path.basename(filepath)}/${file}`
+                );
+              });
           })
-          .then(() => {
-            console.log(`  \u2713 wrote ${path.basename(filepath)}/${file}`);
-          });
-      }),
+        );
+      })
     );
-  }));
 
-const buildPackages = pkg => stat(path.resolve('packages', pkg)).then((stat) => {
-  if (!stat.isDirectory()) {
-    // skip e.g. 'npm-debug.log'
-    return;
-  }
-  console.log(`Building ${pkg}...`);
-  buildPackage(path.resolve('./packages', pkg));
-});
+const buildPackages = pkg =>
+  stat(path.resolve('packages', pkg)).then(st => {
+    if (!st.isDirectory()) {
+      // skip e.g. 'npm-debug.log'
+      return;
+    }
+    console.log(`Building ${pkg}...`);
+    buildPackage(path.resolve('./packages', pkg));
+  });
 
 const build = () => {
-  readDir('packages').then(pkgs => Promise.all(pkgs.map(buildPackages)).catch((err) => {
-    console.error('Build error');
-    console.error(err.stack);
-    process.exit(1);
-  }));
+  readDir('packages').then(pkgs =>
+    Promise.all(pkgs.map(buildPackages)).catch(err => {
+      console.error('Build error');
+      console.error(err.stack);
+      process.exit(1);
+    })
+  );
 };
 
 build();

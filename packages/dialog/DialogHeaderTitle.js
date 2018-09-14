@@ -9,12 +9,12 @@ const DialogHeaderTitle = ({ children, className }) => {
 
 DialogHeaderTitle.propTypes = {
   children: PropTypes.node,
-  className: PropTypes.string,
+  className: PropTypes.string
 };
 
 DialogHeaderTitle.defaultProps = {
   children: null,
-  className: null,
+  className: null
 };
 
 export default DialogHeaderTitle;

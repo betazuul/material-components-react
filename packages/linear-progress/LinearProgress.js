@@ -10,7 +10,7 @@ class LinearProgress extends React.Component {
     this.bufferEl = null;
     this.primaryBarEl = null;
     this.state = {
-      classList: new Set(),
+      classList: new Set()
     };
   }
 
@@ -29,39 +29,38 @@ class LinearProgress extends React.Component {
   get adapter() {
     const { classList } = this.state;
     return {
-      addClass: className => this.setState({ classList: classList.add(className) }),
+      addClass: className =>
+        this.setState({ classList: classList.add(className) }),
       getPrimaryBar: () => this.primaryBarEl,
       getBuffer: () => this.bufferEl,
       hasClass: className => this.classes.split(' ').includes(className),
-      removeClass: (className) => {
+      removeClass: className => {
         classList.delete(className);
         this.setState({ classList });
       },
       setStyle: (el, styleProperty, value) => {
         el.style[styleProperty] = value; // eslint-disable-line no-param-reassign
-      },
+      }
     };
   }
 
   get classes() {
     const { classList } = this.state;
-    const {
-      className, closed, indeterminate, reversed,
-    } = this.props;
+    const { className, closed, indeterminate, reversed } = this.props;
 
     return classnames('mdc-linear-progress', Array.from(classList), className, {
       'mdc-linear-progress--indeterminate': indeterminate,
       'mdc-linear-progress--reversed': reversed,
-      'mdc-linear-progress--closed': closed,
+      'mdc-linear-progress--closed': closed
     });
   }
 
-  initBuffer = (instance) => {
+  initBuffer = instance => {
     if (!instance) return;
     this.bufferEl = instance;
   };
 
-  initPrimaryBar = (instance) => {
+  initPrimaryBar = instance => {
     if (!instance) return;
     this.primaryBarEl = instance;
   };
@@ -91,7 +90,7 @@ LinearProgress.propTypes = {
   closed: PropTypes.bool,
   progress: PropTypes.number,
   indeterminate: PropTypes.bool,
-  reversed: PropTypes.bool,
+  reversed: PropTypes.bool
 };
 
 LinearProgress.defaultProps = {
@@ -100,7 +99,7 @@ LinearProgress.defaultProps = {
   closed: false,
   progress: 0,
   indeterminate: false,
-  reversed: false,
+  reversed: false
 };
 
 export default LinearProgress;

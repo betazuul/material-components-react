@@ -10,7 +10,7 @@ class IconButton extends React.Component {
     this.foundation = null;
     this.iconButtonEl = null;
     this.state = {
-      classList: new Set(),
+      classList: new Set()
     };
   }
 
@@ -32,16 +32,18 @@ class IconButton extends React.Component {
     const { classList } = this.state;
     const { onChange } = this.props;
     return {
-      addClass: className => this.setState({ classList: classList.add(className) }),
-      removeClass: (className) => {
+      addClass: className =>
+        this.setState({ classList: classList.add(className) }),
+      removeClass: className => {
         classList.delete(className);
         this.setState({ classList });
       },
       hasClass: className => this.classes.split(' ').includes(className),
-      setAttr: (attrName, attrValue) => this.iconButtonEl.setAttribute(attrName, attrValue),
-      notifyChange: (event) => {
+      setAttr: (attrName, attrValue) =>
+        this.iconButtonEl.setAttribute(attrName, attrValue),
+      notifyChange: event => {
         if (onChange) onChange(event);
-      },
+      }
     };
   }
 
@@ -49,7 +51,7 @@ class IconButton extends React.Component {
     const { classList } = this.state;
     const { className, material } = this.props;
     return classnames('mdc-icon-button', Array.from(classList), className, {
-      'non-material-icons': !material,
+      'non-material-icons': !material
     });
   }
 
@@ -60,20 +62,20 @@ class IconButton extends React.Component {
     }
   };
 
-  initIconButtonEl = (instance) => {
+  initIconButtonEl = instance => {
     const { initRipple } = this.props;
     initRipple(instance);
     this.iconButtonEl = instance;
   };
 
-  renderIcon = (icon) => {
+  renderIcon = icon => {
     const { iconOn, material } = this.props;
     if (!icon) return null;
 
     if (typeof icon === 'string') {
       const classes = classnames('mdc-icon-button__icon', {
         'mdc-icon-button__icon--on': icon === iconOn,
-        'material-icons': true,
+        'material-icons': true
       });
       return <i className={classes}>{icon}</i>;
     }
@@ -81,11 +83,11 @@ class IconButton extends React.Component {
     const { className, ...otherIconProps } = icon.props;
     const classes = classnames('mdc-icon-button__icon', className, {
       'mdc-icon-button__icon--on': icon === iconOn,
-      'material-icons': material,
+      'material-icons': material
     });
     const iconProps = {
       className: classes,
-      ...otherIconProps,
+      ...otherIconProps
     };
     return React.cloneElement(icon, iconProps);
   };
@@ -111,7 +113,7 @@ class IconButton extends React.Component {
       aria = {
         'aria-label': iconLabel,
         'aria-hidden': true,
-        'aria-pressed': on,
+        'aria-pressed': on
       };
     }
 
@@ -145,7 +147,7 @@ IconButton.propTypes = {
   initRipple: PropTypes.func,
   on: PropTypes.bool,
   material: PropTypes.bool,
-  unbounded: PropTypes.bool,
+  unbounded: PropTypes.bool
 };
 
 IconButton.defaultProps = {
@@ -158,7 +160,7 @@ IconButton.defaultProps = {
   initRipple: () => {},
   on: false,
   material: false,
-  unbounded: true,
+  unbounded: true
 };
 
 export default withRipple(IconButton);
