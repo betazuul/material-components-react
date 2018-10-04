@@ -1,11 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import { MDCRippleFoundation, util } from '@material/ripple';
+import { MDCRippleFoundation, util } from '@material/ripple/dist/mdc.ripple';
+
+const getDisplayName = WrappedComponent =>
+  WrappedComponent.displayName || WrappedComponent.name || 'Component';
 
 const withRipple = WrappedComponent => {
-  class RippledComponent extends Component {
+  class RippledComponent extends React.Component {
     constructor(props) {
       super(props);
       this.foundation = null;
@@ -32,26 +35,38 @@ const withRipple = WrappedComponent => {
     }
 
     get classes() {
-      const { className: wrappedCompClasses } = this.props;
+      const { className: wrappedComponentClasses } = this.props;
       const { classList } = this.state;
-      return classnames(Array.from(classList), wrappedCompClasses);
+      return classnames(Array.from(classList), wrappedComponentClasses);
     }
 
-    initializeFoundation = instance => {
-      const adapter = this.createAdapter(instance); // unnecesary
+    get style() {
+      const { style: wrappedStyle } = this.props;
+      const { style } = this.state;
+      return Object.assign({}, style, wrappedStyle);
+    }
+
+    // surface: This element receives the visual treatment (classes and style) of the ripple.
+    // activator: This element is used to detect whether to activate the ripple. If this is not
+    // provided, the ripple surface will be used to detect activation.
+    initializeFoundation = (surface, activator) => {
+      const adapter = this.createAdapter(surface, activator);
       this.foundation = new MDCRippleFoundation(adapter);
       this.foundation.init();
     };
 
-    createAdapter = instance => {
-      const MATCHES = util.getMatchesProperty(HTMLElement.prototype);
+    createAdapter = (surface, activator) => {
       const { classList } = this.state;
-      const { unbounded, disabled, computeBoundingRect } = this.props;
+      const { computeBoundingRect, disabled, unbounded } = this.props;
+      const MATCHES = util.getMatchesProperty(HTMLElement.prototype);
 
       return {
         browserSupportsCssVars: () => util.supportsCssVariables(window),
         isUnbounded: () => unbounded,
-        isSurfaceActive: () => instance[MATCHES](':active'),
+        isSurfaceActive: () =>
+          activator
+            ? activator[MATCHES](':active')
+            : surface[MATCHES](':active'),
         isSurfaceDisabled: () => disabled,
         addClass: className => {
           if (!this.mounted) {
@@ -63,6 +78,7 @@ const withRipple = WrappedComponent => {
           if (!this.mounted) {
             return;
           }
+
           classList.delete(className);
           this.setState({ classList });
         },
@@ -89,9 +105,9 @@ const withRipple = WrappedComponent => {
             return {};
           }
           if (computeBoundingRect) {
-            return computeBoundingRect(instance);
+            return computeBoundingRect(surface);
           }
-          return instance.getBoundingClientRect();
+          return surface.getBoundingClientRect();
         },
         getWindowPageOffset: () => ({
           x: window.pageXOffset,
@@ -171,12 +187,6 @@ const withRipple = WrappedComponent => {
       this.setState({ style: updatedStyle });
     };
 
-    getMergedStyles = () => {
-      const { style: wrappedStyle } = this.props;
-      const { style } = this.state;
-      return Object.assign({}, style, wrappedStyle);
-    };
-
     render() {
       const {
         /* start black list of otherprops */
@@ -209,14 +219,14 @@ const withRipple = WrappedComponent => {
         // call initRipple on ref on root element that needs ripple
         initRipple: this.initializeFoundation,
         className: this.classes,
-        style: this.getMergedStyles()
+        style: this.style
       });
 
       return <WrappedComponent {...updatedProps} />;
     }
   }
 
-  /* eslint-disable no-param-reassign */
+  /* eslint-disable */
   WrappedComponent.propTypes = Object.assign(
     {
       unbounded: PropTypes.bool,
@@ -252,10 +262,7 @@ const withRipple = WrappedComponent => {
     },
     WrappedComponent.defaultProps
   );
-  /* eslint-enable no-param-reassign */
-
-  const getDisplayName = WrappedComp =>
-    WrappedComp.displayName || WrappedComp.name || 'Component';
+  /* eslint-enable */
 
   RippledComponent.propTypes = WrappedComponent.propTypes;
   RippledComponent.defaultProps = WrappedComponent.defaultProps;

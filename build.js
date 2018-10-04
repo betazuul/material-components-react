@@ -18,6 +18,8 @@ const all = Promise.all.bind(Promise);
 
 const commonExternals = ['react', 'prop-types', 'classnames'];
 
+const dashedToCamel = name => name.replace(/-(\w)/g, (_, v) => v.toUpperCase());
+
 const getMaterialExternals = () => {
   const external = [];
   [
@@ -34,7 +36,6 @@ const getMaterialExternals = () => {
     'list',
     'notched-outline',
     'radio',
-    'ripple',
     'select',
     'tab',
     'tab-indicator',
@@ -44,7 +45,16 @@ const getMaterialExternals = () => {
     'top-app-bar',
     'typography'
   ].forEach(name => {
-    const fileName = `@material/${name}`;
+    // const fileName = `@material/${name}`;
+    const fileName = `@material/${name}/dist/mdc.${dashedToCamel(name)}`;
+    external.push(fileName);
+  });
+  
+  [
+    'ripple',
+  ].forEach(name => {
+    // const fileName = `@material/${name}`;
+    const fileName = `@material/${name}/dist/mdc.${dashedToCamel(name)}`;
     external.push(fileName);
   });
   return external;
