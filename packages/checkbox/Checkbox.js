@@ -1,7 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { getCorrectEventName } from '@material/animation/index';
 import { MDCCheckboxFoundation } from '@material/checkbox';
 import { withRipple } from '@betazuul/ripple';
 
@@ -19,18 +18,13 @@ class Checkbox extends React.Component {
   componentDidMount() {
     const { checked, disabled, indeterminate, value } = this.props;
 
-    this.checkboxEl.addEventListener(
-      getCorrectEventName(window, 'animationend'),
-      this.handleAnimationEnd
-    );
-    this.nativeCheckboxEl.addEventListener('change', this.handleChange);
-
     this.foundation = new MDCCheckboxFoundation(this.adapter);
     this.foundation.init();
-    this.foundation.setChecked(checked);
-    this.foundation.setIndeterminate(indeterminate);
-    this.foundation.setDisabled(disabled);
-    this.foundation.setValue(value);
+
+    if (checked) this.foundation.setChecked(checked);
+    if (indeterminate) this.foundation.setIndeterminate(indeterminate);
+    if (disabled) this.foundation.setDisabled(disabled);
+    if (value) this.foundation.setValue(value);
   }
 
   componentWillUnmount() {
@@ -67,26 +61,26 @@ class Checkbox extends React.Component {
     this.foundation.handleChange();
   };
 
-  handleAnimationEnd = () => {
-    this.foundation.handleAnimationEnd();
-  };
-
   handleLabelClick = e => {
-    if (this.foundation.isDisabled()) return;
-
     const { onMouseDown, onMouseUp } = this.props;
 
-    onMouseDown(e);
-    setTimeout(() => {
-      onMouseUp(e);
-    }, 100);
+    if (this.foundation.isDisabled()) return;
+
+    if (onMouseDown) onMouseDown(e);
+    if (onMouseUp) {
+      setTimeout(() => {
+        onMouseUp(e);
+      }, 100);
+    }
   };
 
   initCheckbox = instance => {
     const { initRipple } = this.props;
 
-    initRipple(instance);
+    if (!instance) return;
+
     this.checkboxEl = instance;
+    initRipple(instance);
   };
 
   initNativeCheckbox = instance => {
@@ -115,6 +109,7 @@ class Checkbox extends React.Component {
         id={id}
         name={name}
         ref={this.initNativeCheckbox}
+        onClick={this.handleChange}
       />
     );
   }
