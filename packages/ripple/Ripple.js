@@ -72,6 +72,7 @@ const withRipple = WrappedComponent => {
           if (!this.mounted) {
             return;
           }
+          
           this.setState({ classList: classList.add(className) });
         },
         removeClass: className => {

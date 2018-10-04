@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { MDCCheckboxFoundation } from '@material/checkbox';
+import { MDCCheckboxFoundation } from '@material/checkbox/dist/mdc.checkbox';
 import { withRipple } from '@betazuul/ripple';
 
 class Checkbox extends React.Component {
@@ -17,26 +17,30 @@ class Checkbox extends React.Component {
 
   componentDidMount() {
     const { checked, disabled, indeterminate, value } = this.props;
-
+    this.mounted = true;
     this.foundation = new MDCCheckboxFoundation(this.adapter);
     this.foundation.init();
 
-    if (checked) this.foundation.setChecked(checked);
-    if (indeterminate) this.foundation.setIndeterminate(indeterminate);
+    if (checked) this.nativeCheckboxEl.checked = checked;
     if (disabled) this.foundation.setDisabled(disabled);
-    if (value) this.foundation.setValue(value);
+    if (indeterminate) this.nativeCheckboxEl.indeterminate = indeterminate;
+    if (value) this.nativeCheckboxEl.value = value;
   }
 
   componentWillUnmount() {
+    this.mounted = false;
     this.foundation.destroy();
   }
 
   get adapter() {
     const { classList } = this.state;
     return {
-      addClass: className =>
-        this.setState({ classList: classList.add(className) }),
+      addClass: className => {
+        if (!this.mounted) return;
+        this.setState({ classList: classList.add(className) });
+      },
       removeClass: className => {
+        if (!this.mounted) return;
         classList.delete(className);
         this.setState({ classList });
       },
@@ -45,6 +49,12 @@ class Checkbox extends React.Component {
       removeNativeControlAttr: attr =>
         this.nativeCheckboxEl.removeAttribute(attr),
       getNativeControl: () => this.nativeCheckboxEl,
+      isIndeterminate: () => this.nativeCheckboxEl.indeterminate,
+      isChecked: () => this.nativeCheckboxEl.checked,
+      hasNativeControl: () => !!this.nativeCheckboxEl,
+      setNativeControlDisabled: disabled => {
+        this.nativeCheckboxEl.disabled = disabled;
+      },
       forceLayout: () => this.checkboxEl.offsetWidth,
       isAttachedToDOM: () => Boolean(this.checkboxEl.parentNode)
     };
@@ -53,7 +63,6 @@ class Checkbox extends React.Component {
   get classes() {
     const { classList } = this.state;
     const { className } = this.props;
-
     return classnames('mdc-checkbox', Array.from(classList), className);
   }
 
@@ -62,10 +71,9 @@ class Checkbox extends React.Component {
   };
 
   handleLabelClick = e => {
+    if (this.nativeCheckboxEl.disabled) return;
+
     const { onMouseDown, onMouseUp } = this.props;
-
-    if (this.foundation.isDisabled()) return;
-
     if (onMouseDown) onMouseDown(e);
     if (onMouseUp) {
       setTimeout(() => {
@@ -75,59 +83,29 @@ class Checkbox extends React.Component {
   };
 
   initCheckbox = instance => {
-    const { initRipple } = this.props;
-
     if (!instance) return;
-
+    const { initRipple } = this.props;
     this.checkboxEl = instance;
-    initRipple(instance);
+    initRipple(this.checkboxEl);
   };
 
   initNativeCheckbox = instance => {
+    if (!instance) return;
     this.nativeCheckboxEl = instance;
   };
 
-  renderBackground = () => (
-    <div className="mdc-checkbox__background">
-      <svg className="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-        <path
-          className="mdc-checkbox__checkmark-path"
-          fill="none"
-          d="M1.73,12.91 8.1,19.28 22.79,4.59"
-        />
-      </svg>
-      <div className="mdc-checkbox__mixedmark" />
-    </div>
-  );
-
-  renderInput() {
-    const { id, name } = this.props;
-    return (
-      <input
-        type="checkbox"
-        className="mdc-checkbox__native-control"
-        id={id}
-        name={name}
-        ref={this.initNativeCheckbox}
-        onClick={this.handleChange}
-      />
-    );
-  }
-
   renderLabel() {
     const { disabled, id, label } = this.props;
-    if (label) {
-      const classes = classnames('bmc-checkbox-label', {
-        'bmc-checkbox-label--disabled': disabled
-      });
-      return (
-        <label className={classes} htmlFor={id} onClick={this.handleLabelClick}>
-          {label}
-        </label>
-      );
-    }
+    if (!label) return null;
 
-    return null;
+    const classes = classnames('bmc-checkbox-label', {
+      'bmc-checkbox-label--disabled': disabled
+    });
+    return (
+      <label className={classes} htmlFor={id} onClick={this.handleLabelClick}>
+        {label}
+      </label>
+    );
   }
 
   render() {
@@ -150,8 +128,24 @@ class Checkbox extends React.Component {
     return (
       <React.Fragment>
         <div className={this.classes} ref={this.initCheckbox} {...otherProps}>
-          {this.renderInput()}
-          {this.renderBackground()}
+          <input
+            type="checkbox"
+            className="mdc-checkbox__native-control"
+            id={id}
+            name={name}
+            ref={this.initNativeCheckbox}
+            onChange={this.handleChange}
+          />
+          <div className="mdc-checkbox__background">
+            <svg className="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+              <path
+                className="mdc-checkbox__checkmark-path"
+                fill="none"
+                d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              />
+            </svg>
+            <div className="mdc-checkbox__mixedmark" />
+          </div>
         </div>
         {this.renderLabel()}
       </React.Fragment>

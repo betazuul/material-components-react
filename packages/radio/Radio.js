@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { MDCRadioFoundation } from '@material/radio';
+import { MDCRadioFoundation } from '@material/radio/dist/mdc.radio';
 import { withRipple } from '@betazuul/ripple';
 
 class Radio extends React.Component {
@@ -17,25 +17,29 @@ class Radio extends React.Component {
 
   componentDidMount() {
     const { checked, disabled, value } = this.props;
-
+    this.mounted = true;
     this.foundation = new MDCRadioFoundation(this.adapter);
     this.foundation.init();
-    this.foundation.setChecked(checked);
-    this.foundation.setDisabled(disabled);
-    this.foundation.setValue(value);
+
+    if (checked) this.foundation.setChecked(checked);
+    if (disabled) this.foundation.setDisabled(disabled);
+    if (value) this.foundation.setValue(value);
   }
 
   componentWillUnmount() {
+    this.mounted = false;
     this.foundation.destroy();
   }
 
   get adapter() {
     const { classList } = this.state;
-
     return {
-      addClass: className =>
-        this.setState({ classList: classList.add(className) }),
+      addClass: className => {
+        if (!this.mounted) return;
+        this.setState({ classList: classList.add(className) });
+      },
       removeClass: className => {
+        if (!this.mounted) return;
         classList.delete(className);
         this.setState({ classList });
       },
@@ -46,7 +50,6 @@ class Radio extends React.Component {
   get classes() {
     const { classList } = this.state;
     const { className } = this.props;
-
     return classnames('mdc-radio', Array.from(classList), className);
   }
 
@@ -54,11 +57,12 @@ class Radio extends React.Component {
     if (this.foundation.isDisabled()) return;
 
     const { onMouseDown, onMouseUp } = this.props;
-
-    onMouseDown(e);
-    setTimeout(() => {
-      onMouseUp(e);
-    }, 100);
+    if (onMouseDown) onMouseDown(e);
+    if (onMouseUp) {
+      setTimeout(() => {
+        onMouseUp(e);
+      }, 100);
+    }
 
     if (!this.foundation.isChecked()) {
       this.foundation.setChecked(true);
@@ -66,43 +70,29 @@ class Radio extends React.Component {
   };
 
   initRadio = instance => {
+    if (!instance) return;
     const { initRipple } = this.props;
-    initRipple(instance);
     this.radioEl = instance;
+    initRipple(this.radioEl);
   };
 
   initNativeRadio = instance => {
+    if (!instance) return;
     this.nativeRadioEl = instance;
   };
 
-  renderInput() {
-    const { id, name } = this.props;
-
-    return (
-      <input
-        type="radio"
-        className="mdc-radio__native-control"
-        id={id}
-        name={name}
-        ref={this.initNativeRadio}
-      />
-    );
-  }
-
   renderLabel() {
     const { disabled, id, label } = this.props;
+    if (!label) return null;
 
-    return label ? (
-      <label
-        className={classnames('bmc-radio-label', {
-          'bmc-radio-label--disabled': disabled
-        })}
-        htmlFor={id}
-        onClick={this.handleLabelClick}
-      >
+    const classes = classnames('bmc-radio-label', {
+      'bmc-radio-label--disabled': disabled
+    });
+    return (
+      <label className={classes} htmlFor={id} onClick={this.handleLabelClick}>
         {label}
       </label>
-    ) : null;
+    );
   }
 
   render() {
@@ -124,7 +114,13 @@ class Radio extends React.Component {
     return (
       <React.Fragment>
         <div className={this.classes} ref={this.initRadio} {...otherProps}>
-          {this.renderInput()}
+          <input
+            type="radio"
+            className="mdc-radio__native-control"
+            id={id}
+            name={name}
+            ref={this.initNativeRadio}
+          />
           <div className="mdc-radio__background">
             <div className="mdc-radio__outer-circle" />
             <div className="mdc-radio__inner-circle" />

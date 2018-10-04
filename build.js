@@ -36,6 +36,7 @@ const getMaterialExternals = () => {
     'list',
     'notched-outline',
     'radio',
+    'ripple',
     'select',
     'tab',
     'tab-indicator',
@@ -44,14 +45,6 @@ const getMaterialExternals = () => {
     'theme',
     'top-app-bar',
     'typography'
-  ].forEach(name => {
-    // const fileName = `@material/${name}`;
-    const fileName = `@material/${name}/dist/mdc.${dashedToCamel(name)}`;
-    external.push(fileName);
-  });
-  
-  [
-    'ripple',
   ].forEach(name => {
     // const fileName = `@material/${name}`;
     const fileName = `@material/${name}/dist/mdc.${dashedToCamel(name)}`;
