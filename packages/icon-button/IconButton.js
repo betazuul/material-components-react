@@ -15,6 +15,7 @@ class IconButton extends React.Component {
   }
 
   componentDidMount() {
+    this.mounted = true;
     const { iconOn, on } = this.props;
     this.foundation = new MDCIconButtonToggleFoundation(this.adapter);
     this.foundation.init();
@@ -25,6 +26,7 @@ class IconButton extends React.Component {
   }
 
   componentWillUnmount() {
+    this.mounted = false;
     this.foundation.destroy();
   }
 
@@ -32,9 +34,12 @@ class IconButton extends React.Component {
     const { classList } = this.state;
     const { onChange } = this.props;
     return {
-      addClass: className =>
-        this.setState({ classList: classList.add(className) }),
+      addClass: className => {
+        if (!this.mounted) return;
+        this.setState({ classList: classList.add(className) });
+      },
       removeClass: className => {
+        if (!this.mounted) return;
         classList.delete(className);
         this.setState({ classList });
       },
@@ -62,16 +67,18 @@ class IconButton extends React.Component {
     }
   };
 
-  initIconButtonEl = instance => {
-    const { initRipple } = this.props;
-    initRipple(instance);
+  initIconButton = instance => {
+    if (!instance) return;
+
     this.iconButtonEl = instance;
+    const { initRipple } = this.props;
+    initRipple(this.iconButtonEl);
   };
 
   renderIcon = icon => {
-    const { iconOn, material } = this.props;
     if (!icon) return null;
-
+    
+    const { iconOn, material } = this.props;
     if (typeof icon === 'string') {
       const classes = classnames('mdc-icon-button__icon', {
         'mdc-icon-button__icon--on': icon === iconOn,
@@ -102,6 +109,7 @@ class IconButton extends React.Component {
       iconLabel,
       id,
       initRipple, // eslint-disable-line no-unused-vars
+      material,
       on,
       unbounded, // eslint-disable-line no-unused-vars
       ...otherProps
@@ -125,7 +133,7 @@ class IconButton extends React.Component {
         className={this.classes}
         href={href}
         onClick={this.handleClick}
-        ref={this.initIconButtonEl}
+        ref={this.initIconButton}
         {...aria}
         {...otherProps}
       >
@@ -137,7 +145,7 @@ class IconButton extends React.Component {
 }
 
 IconButton.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   className: PropTypes.string,
   href: PropTypes.string,
   icon: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
@@ -151,6 +159,7 @@ IconButton.propTypes = {
 };
 
 IconButton.defaultProps = {
+  children: null,
   className: null,
   href: null,
   icon: null,

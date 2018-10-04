@@ -68,7 +68,7 @@ class ListDemo extends React.Component {
             width: '50%'
           }}
         >
-          <div style={{}}>
+          <div>
             <FormField>
               <Checkbox
                 id={`checkbox-${index}-id`}
