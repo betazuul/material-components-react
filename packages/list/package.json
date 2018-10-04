@@ -1,0 +1,16 @@
+{
+  "name": "@betazuul/list",
+  "version": "0.4.1",
+  "description": "Material Component React List",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/betazuul/material-components-react.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@betazuul/ripple": "^0.4.1",
+    "@material/list": "^0.39.3"
+  }
+}
