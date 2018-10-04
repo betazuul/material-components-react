@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { storiesOf } from '@storybook/react';
 
 import {
@@ -10,7 +11,7 @@ import {
 } from '..';
 import '../dialog.scss';
 
-class DemoDialog extends React.Component {
+class DialogDemo extends React.Component {
   state = {
     open: false
   };
@@ -26,35 +27,6 @@ class DemoDialog extends React.Component {
   handleCancel = () => {
     this.setState({ open: false });
   };
-
-  render() {
-    const { open } = this.state;
-    const { acceptButton, alert, cancelButton } = this.props;
-    return (
-      <div className="dialog-container">
-        <button className="mdc-button" onClick={this.handleClick}>
-          Open Dialog
-        </button>
-        <Dialog
-          open={open}
-          onAccept={this.handleAccept}
-          onCancel={this.handleCancel}
-        >
-          <DialogHeader>
-            <DialogHeaderTitle>Are you sure?</DialogHeaderTitle>
-          </DialogHeader>
-          {this.renderBody()}
-          <DialogFooter
-            alert={alert}
-            cancelButton={cancelButton}
-            acceptButton={acceptButton}
-          >
-            This is the footer
-          </DialogFooter>
-        </Dialog>
-      </div>
-    );
-  }
 
   renderBody() {
     const { scrollable } = this.props;
@@ -77,23 +49,58 @@ class DemoDialog extends React.Component {
       />
     );
   }
+
+  render() {
+    const { open } = this.state;
+    const { acceptButton, alert, cancelButton } = this.props;
+    return (
+      <div className="dialog-container">
+        <button type="button" className="mdc-button" onClick={this.handleClick}>
+          Open Dialog
+        </button>
+        <Dialog
+          open={open}
+          onAccept={this.handleAccept}
+          onCancel={this.handleCancel}
+        >
+          <DialogHeader>
+            <DialogHeaderTitle>Are you sure?</DialogHeaderTitle>
+          </DialogHeader>
+          {this.renderBody()}
+          <DialogFooter
+            alert={alert}
+            cancelButton={cancelButton}
+            acceptButton={acceptButton}
+          >
+            This is the footer
+          </DialogFooter>
+        </Dialog>
+      </div>
+    );
+  }
 }
 
-DemoDialog.defaultTypes = {
+DialogDemo.propTypes = {
+  alert: PropTypes.bool,
+  acceptButton: PropTypes.element,
+  cancelButton: PropTypes.element,
+  scrollable: PropTypes.bool
+};
+
+DialogDemo.defaultProps = {
   alert: false,
   acceptButton: true,
-  cancelButton: true
+  cancelButton: true,
+  scrollable: false
 };
 
 storiesOf('Dialog', module)
-  .add('Alert', () => <DemoDialog alert />)
-  .add('Basic', () => <DemoDialog />)
-  .add('Custom Buttons', () => {
-    return (
-      <DemoDialog
-        cancelButton={<button>Custom Decline</button>}
-        acceptButton={<button>Custom Accept</button>}
-      />
-    );
-  })
-  .add('Scrollable', () => <DemoDialog scrollable />);
+  .add('Alert', () => <DialogDemo alert />)
+  .add('Basic', () => <DialogDemo />)
+  .add('Custom Buttons', () => (
+    <DialogDemo
+      cancelButton={<button type="button">Custom Decline</button>}
+      acceptButton={<button type="button">Custom Accept</button>}
+    />
+  ))
+  .add('Scrollable', () => <DialogDemo scrollable />);
