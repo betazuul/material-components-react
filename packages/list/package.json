@@ -1,6 +1,6 @@
 {
   "name": "@betazuul/list",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Material Component React List",
   "main": "index.js",
   "repository": {
@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@betazuul/ripple": "^0.4.1",
+    "@betazuul/ripple": "^0.4.2",
     "@material/list": "^0.39.3"
   }
 }
