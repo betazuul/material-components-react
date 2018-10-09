@@ -54,12 +54,7 @@ class DialogDemo extends React.Component {
         '<p>Sapiente reiciendis quis eveniet iure dicta perferendis quos consectetur, soluta sunt, labore ipsam inventore maiores laudantium recusandae deleniti autem animi consequatur, voluptatem sint. Dignissimos minima labore earum vitae ad non!</p>' +
         '<p>Cum ex totam dolore officiis maiores quidem necessitatibus consequatur molestias culpa, quas, aperiam tempora et! Dolorem, voluptates dignissimos? Voluptatem voluptatibus expedita, error ducimus distinctio necessitatibus laudantium officiis dolorum nam vitae?</p>'
       : 'Do you really want to do this?';
-    return (
-      <DialogContent
-        scrollable={scrollable}
-        dangerouslySetInnerHTML={{ __html: text }}
-      />
-    );
+    return <DialogContent dangerouslySetInnerHTML={{ __html: text }} />;
   }
 
   render() {

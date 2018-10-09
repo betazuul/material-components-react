@@ -64,6 +64,7 @@ class Dialog extends React.Component {
   }
 
   get adapter() {
+    const { scrollable } = this.props;
     return {
       addClass: className => {
         if (!this.mounted) return;
@@ -86,8 +87,7 @@ class Dialog extends React.Component {
         if (!this.focusTrap) return;
         this.focusTrap.deactivate();
       },
-      isContentScrollable: () =>
-        !!this.contentEl && util.isScrollable(this.contentEl),
+      isContentScrollable: () => scrollable,
       areButtonsStacked: () => util.areTopsMisaligned(this.buttonsEl),
       getActionFromEvent: event => {
         const element = closest(event.target, `[${strings.ACTION_ATTRIBUTE}]`);
@@ -109,10 +109,8 @@ class Dialog extends React.Component {
 
   get classes() {
     const { classList } = this.state;
-    const { className, scrollable } = this.props;
-    return classnames('mdc-dialog', Array.from(classList), className, {
-      'mdc-dialog--scrollable': scrollable
-    });
+    const { className } = this.props;
+    return classnames('mdc-dialog', Array.from(classList), className);
   }
 
   handleScrimClick = () => {

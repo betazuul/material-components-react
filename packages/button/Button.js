@@ -4,6 +4,16 @@ import PropTypes from 'prop-types';
 import { withRipple } from '@betazuul/ripple';
 
 export class Button extends Component {
+  get classes() {
+    const { className, dense, outlined, raised, unelevated } = this.props;
+    return classnames('mdc-button', className, {
+      'mdc-button--dense': dense,
+      'mdc-button--outlined': outlined,
+      'mdc-button--raised': raised,
+      'mdc-button--unelevated': unelevated
+    });
+  }
+
   addClassesToElement = (classes, element) => {
     const propsWithClasses = {
       className: classnames(classes, element.props.className)
@@ -11,8 +21,15 @@ export class Button extends Component {
     return React.cloneElement(element, propsWithClasses);
   };
 
+  initButton = instance => {
+    if (!instance) return;
+    const { initRipple } = this.props;
+    initRipple(instance);
+  };
+
   renderIcon() {
     const { icon } = this.props;
+    if (!icon) return null;
     return this.addClassesToElement('mdc-button__icon', icon);
   }
 
@@ -31,23 +48,16 @@ export class Button extends Component {
       ...otherProps
     } = this.props;
 
-    const classes = classnames('mdc-button', className, {
-      'mdc-button--dense': dense,
-      'mdc-button--outlined': outlined,
-      'mdc-button--raised': raised,
-      'mdc-button--unelevated': unelevated
-    });
-
     const SemanticButton = href ? 'a' : 'button';
 
     return (
       <SemanticButton
-        className={classes}
+        className={this.classes}
         href={href}
-        ref={initRipple}
+        ref={this.initButton}
         {...otherProps}
       >
-        {icon ? this.renderIcon() : null}
+        {this.renderIcon()}
         {children}
       </SemanticButton>
     );
