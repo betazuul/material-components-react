@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@betazuul/ripple": "^0.4.3",
-    "@material/dialog": "^0.39.1"
+    "@material/dialog": "^0.40.0",
+    "@material/dom": "^0.40.0"
   }
 }

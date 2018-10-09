@@ -1,29 +1,50 @@
 import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { MDCDialogFoundation, util } from '@material/dialog';
-import { strings } from '@material/dialog/constants';
+import { MDCDialogFoundation, util } from '@material/dialog/dist/mdc.dialog';
+import { closest, matches } from '@material/dom/dist/mdc.dom';
+import createFocusTrap from 'focus-trap';
+
+const { strings } = MDCDialogFoundation;
 
 class Dialog extends React.Component {
   constructor(props) {
     super(props);
     this.foundation = null;
-    this.focusTrap = null;
+    this.buttonsEl = null;
+    this.contentEl = null;
+    this.defaultButtonEl = null;
     this.dialogEl = null;
-    this.dialogSurfaceEl = null;
+    this.focusTrap = null;
+    this.focusTrapFactory = createFocusTrap;
+    this.initialFocusEl = null;
     this.state = {
       classList: new Set()
     };
   }
 
   componentDidMount() {
-    this.focusTrap = util.createFocusTrapInstance(
-      this.dialogSurfaceEl,
-      this.acceptButton
-    );
+    this.mounted = true;
 
     this.foundation = new MDCDialogFoundation(this.adapter);
     this.foundation.init();
+
+    const { simple } = this.props;
+    if (!simple) {
+      this.focusTrap = util.createFocusTrapInstance(
+        this.containerEl,
+        this.focusTrapFactory,
+        this.initialFocusEl
+      );
+    }
+
+    this.buttonsEl = [].slice.call(
+      this.dialogEl.querySelectorAll(strings.BUTTON_SELECTOR)
+    );
+
+    this.defaultButtonEl = this.dialogEl.querySelector(
+      strings.DEFAULT_BUTTON_SELECTOR
+    );
   }
 
   componentDidUpdate(prevProps) {
@@ -38,83 +59,75 @@ class Dialog extends React.Component {
   }
 
   componentWillUnmount() {
+    this.mounted = false;
     this.foundation.destroy();
   }
 
-  get acceptButton() {
-    return this.dialogEl.querySelector(strings.ACCEPT_SELECTOR);
-  }
-
   get adapter() {
-    const { classList } = this.state;
-
     return {
-      addClass: className =>
-        this.setState({ classList: classList.add(className) }),
-      removeClass: className => {
-        classList.delete(className);
-        this.setState({ classList });
+      addClass: className => {
+        if (!this.mounted) return;
+        this.dialogEl.classList.add(className);
       },
+      removeClass: className => {
+        if (!this.mounted) return;
+        this.dialogEl.classList.remove(className);
+      },
+      hasClass: className => this.dialogEl.classList.contains(className),
       addBodyClass: className => document.body.classList.add(className),
       removeBodyClass: className => document.body.classList.remove(className),
-      eventTargetHasClass: (target, className) =>
-        target.classList.contains(className),
-      registerInteractionHandler: (event, handler) => {
-        this.dialogEl.addEventListener(event, handler);
+      eventTargetMatches: (target, selector) => matches(target, selector),
+      computeBoundingRect: () => this.dialogEl.getBoundingClientRect(),
+      trapFocus: () => {
+        if (!this.focusTrap) return;
+        this.focusTrap.activate();
       },
-      deregisterInteractionHandler: (event, handler) => {
-        this.dialogEl.removeEventListener(event, handler);
+      releaseFocus: () => {
+        if (!this.focusTrap) return;
+        this.focusTrap.deactivate();
       },
-      registerSurfaceInteractionHandler: (event, handler) => {
-        this.dialogSurfaceEl.addEventListener(event, handler);
+      isContentScrollable: () =>
+        !!this.contentEl && util.isScrollable(this.contentEl),
+      areButtonsStacked: () => util.areTopsMisaligned(this.buttonsEl),
+      getActionFromEvent: event => {
+        const element = closest(event.target, `[${strings.ACTION_ATTRIBUTE}]`);
+        return element && element.getAttribute(strings.ACTION_ATTRIBUTE);
       },
-      deregisterSurfaceInteractionHandler: (event, handler) => {
-        this.dialogSurfaceEl.removeEventListener(event, handler);
-      },
-      registerDocumentKeydownHandler: handler =>
-        document.addEventListener('keydown', handler),
-      deregisterDocumentKeydownHandler: handler =>
-        document.removeEventListener('keydown', handler),
-      registerTransitionEndHandler: handler =>
-        this.dialogSurfaceEl.addEventListener('transitionend', handler),
-      deregisterTransitionEndHandler: handler =>
-        this.dialogSurfaceEl.removeEventListener('transitionend', handler),
-      notifyAccept: () => {
-        const { onAccept } = this.props;
-        if (onAccept) {
-          onAccept();
+      clickDefaultButton: () => {
+        if (this.defaultButtonEl) {
+          this.defaultButtonEl.click();
         }
       },
-      notifyCancel: () => {
-        const { onCancel } = this.props;
-        if (onCancel) {
-          onCancel();
-        }
-      },
-      trapFocusOnSurface: () => this.focusTrap.activate(),
-      untrapFocusOnSurface: () => this.focusTrap.deactivate(),
-      isDialog: element => element === this.dialogSurfaceEl
+      reverseButtons: () => {
+        this.buttonsEl.reverse();
+        this.buttonsEl.forEach(button =>
+          button.parentElement.appendChild(button)
+        );
+      }
     };
   }
 
   get classes() {
     const { classList } = this.state;
-    const { className } = this.props;
-    return classnames('mdc-dialog', Array.from(classList), className);
+    const { className, scrollable } = this.props;
+    return classnames('mdc-dialog', Array.from(classList), className, {
+      'mdc-dialog--scrollable': scrollable
+    });
   }
 
-  getMergedStyles = () => {
-    const { style } = this.state;
-    const { style: propStyle } = this.props;
-    return Object.assign({}, style, propStyle);
+  handleScrimClick = () => {
+    const { onClose } = this.props;
+    if (onClose) onClose();
   };
 
   initDialog = instance => {
+    if (!instance) return;
     this.dialogEl = instance;
   };
 
-  initDialogSurface = instance => {
-    this.dialogSurfaceEl = instance;
+  initDialogContainer = instance => {
+    if (!instance) return;
+    this.containerEl = instance;
   };
 
   render() {
@@ -122,28 +135,31 @@ class Dialog extends React.Component {
       children,
       /* eslint-disable */
       className,
-      onAccept,
-      onCancel,
+      onClose,
+      open,
+      scrollable,
+      simple,
       /* eslint-enable */
       ...otherProps
     } = this.props;
 
     return (
-      <aside
+      <div
         className={this.classes}
-        ref={this.initDialog}
         role="alertdialog"
-        style={this.getMergedStyles()}
+        aria-modal="true"
+        aria-labelledby="my-dialog-title"
+        aria-describedby="my-dialog-content"
+        ref={this.initDialog}
+        {...otherProps}
       >
-        <div
-          className="mdc-dialog__surface"
-          ref={this.initDialogSurface}
-          {...otherProps}
-        >
-          {children}
+        <div className="mdc-dialog__container" ref={this.initDialogContainer}>
+          <div className="mdc-dialog__surface">{children}</div>
         </div>
-        <div className="mdc-dialog__backdrop" />
-      </aside>
+        {/* eslint-disable */}
+        <div className="mdc-dialog__scrim" onClick={this.handleScrimClick} />
+        {/* eslint-enable */}
+      </div>
     );
   }
 }
@@ -151,17 +167,19 @@ class Dialog extends React.Component {
 Dialog.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
-  focusTrap: PropTypes.oneOf(['accept', 'cancel']),
-  onAccept: PropTypes.func,
-  onCancel: PropTypes.func
+  onClose: PropTypes.func,
+  open: PropTypes.bool,
+  scrollable: PropTypes.bool,
+  simple: PropTypes.bool
 };
 
 Dialog.defaultProps = {
   children: null,
   className: null,
-  focusTrap: 'accept',
-  onAccept: () => {},
-  onCancel: () => {}
+  onClose: () => {},
+  open: false,
+  scrollable: false,
+  simple: false
 };
 
 export default Dialog;

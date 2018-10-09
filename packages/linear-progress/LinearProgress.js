@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { MDCLinearProgressFoundation } from '@material/linear-progress';
+import { MDCLinearProgressFoundation } from '@material/linear-progress/dist/mdc.linearProgress';
 
 class LinearProgress extends React.Component {
   constructor(props) {

@@ -1,8 +1,9 @@
 import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { MDCListFoundation } from '@material/list';
-import { cssClasses, strings } from '@material/list/constants';
+import { MDCListFoundation } from '@material/list/dist/mdc.list';
+
+const { cssClasses, strings } = MDCListFoundation;
 
 class List extends React.Component {
   constructor(props) {
@@ -14,7 +15,7 @@ class List extends React.Component {
   componentDidMount() {
     this.foundation = new MDCListFoundation(this.adapter);
     this.foundation.init();
-    
+
     this.layout();
     this.initializeListType();
   }

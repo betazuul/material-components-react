@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { MDCIconButtonToggleFoundation } from '@material/icon-button';
+import { MDCIconButtonToggleFoundation } from '@material/icon-button/dist/mdc.iconButton';
 import { withRipple } from '@betazuul/ripple';
 
 class IconButton extends React.Component {
@@ -77,7 +77,7 @@ class IconButton extends React.Component {
 
   renderIcon = icon => {
     if (!icon) return null;
-    
+
     const { iconOn, material } = this.props;
     if (typeof icon === 'string') {
       const classes = classnames('mdc-icon-button__icon', {

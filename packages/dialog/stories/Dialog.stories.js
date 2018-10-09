@@ -2,13 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { storiesOf } from '@storybook/react';
 
-import {
-  Dialog,
-  DialogBody,
-  DialogFooter,
-  DialogHeader,
-  DialogHeaderTitle
-} from '..';
+import { Dialog, DialogActions, DialogContent, DialogTitle } from '..';
 import '../dialog.scss';
 
 class DialogDemo extends React.Component {
@@ -20,13 +14,31 @@ class DialogDemo extends React.Component {
     this.setState({ open: true });
   };
 
-  handleAccept = () => {
+  handleClose = action => {
+    console.log('stories -- handleClose action:', action);
     this.setState({ open: false });
   };
 
-  handleCancel = () => {
-    this.setState({ open: false });
-  };
+  renderActions() {
+    const {
+      acceptButton,
+      acceptButtonLabel,
+      closeButton,
+      closeButtonLabel
+    } = this.props;
+
+    if (!acceptButton && !closeButton) return null;
+
+    return (
+      <DialogActions
+        acceptButton={acceptButton}
+        acceptButtonLabel={acceptButtonLabel}
+        closeButton={closeButton}
+        closeButtonLabel={closeButtonLabel}
+        onClose={this.handleClose}
+      />
+    );
+  }
 
   renderBody() {
     const { scrollable } = this.props;
@@ -43,7 +55,7 @@ class DialogDemo extends React.Component {
         '<p>Cum ex totam dolore officiis maiores quidem necessitatibus consequatur molestias culpa, quas, aperiam tempora et! Dolorem, voluptates dignissimos? Voluptatem voluptatibus expedita, error ducimus distinctio necessitatibus laudantium officiis dolorum nam vitae?</p>'
       : 'Do you really want to do this?';
     return (
-      <DialogBody
+      <DialogContent
         scrollable={scrollable}
         dangerouslySetInnerHTML={{ __html: text }}
       />
@@ -52,7 +64,7 @@ class DialogDemo extends React.Component {
 
   render() {
     const { open } = this.state;
-    const { acceptButton, alert, cancelButton } = this.props;
+    const { alert, scrollable, simple } = this.props;
     return (
       <div className="dialog-container">
         <button type="button" className="mdc-button" onClick={this.handleClick}>
@@ -60,20 +72,13 @@ class DialogDemo extends React.Component {
         </button>
         <Dialog
           open={open}
-          onAccept={this.handleAccept}
-          onCancel={this.handleCancel}
+          scrollable={scrollable}
+          simple={simple}
+          onClose={this.handleClose}
         >
-          <DialogHeader>
-            <DialogHeaderTitle>Are you sure?</DialogHeaderTitle>
-          </DialogHeader>
+          {!alert && <DialogTitle>Are you sure?</DialogTitle>}
           {this.renderBody()}
-          <DialogFooter
-            alert={alert}
-            cancelButton={cancelButton}
-            acceptButton={acceptButton}
-          >
-            This is the footer
-          </DialogFooter>
+          {this.renderActions()}
         </Dialog>
       </div>
     );
@@ -82,25 +87,33 @@ class DialogDemo extends React.Component {
 
 DialogDemo.propTypes = {
   alert: PropTypes.bool,
-  acceptButton: PropTypes.element,
-  cancelButton: PropTypes.element,
-  scrollable: PropTypes.bool
+  acceptButton: PropTypes.bool,
+  acceptButtonLabel: PropTypes.string,
+  closeButton: PropTypes.bool,
+  closeButtonLabel: PropTypes.string,
+  scrollable: PropTypes.bool,
+  simple: PropTypes.bool
 };
 
 DialogDemo.defaultProps = {
   alert: false,
   acceptButton: true,
-  cancelButton: true,
-  scrollable: false
+  acceptButtonLabel: 'Accept',
+  closeButton: true,
+  closeButtonLabel: 'Decline',
+  scrollable: false,
+  simple: false
 };
 
 storiesOf('Dialog', module)
-  .add('Alert', () => <DialogDemo alert />)
   .add('Basic', () => <DialogDemo />)
-  .add('Custom Buttons', () => (
-    <DialogDemo
-      cancelButton={<button type="button">Custom Decline</button>}
-      acceptButton={<button type="button">Custom Accept</button>}
-    />
+  .add('Alert', () => (
+    <DialogDemo alert acceptButton={false} closeButtonLabel="Ok" />
+  ))
+  .add('Simple', () => (
+    <DialogDemo acceptButton={false} closeButton={false} simple />
+  ))
+  .add('Confirmation', () => (
+    <DialogDemo acceptButtonLabel="Ok" closeButtonLabel="Cancel" />
   ))
   .add('Scrollable', () => <DialogDemo scrollable />);

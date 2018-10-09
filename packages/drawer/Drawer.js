@@ -5,10 +5,10 @@ import {
   MDCDismissibleDrawerFoundation,
   MDCModalDrawerFoundation,
   util
-} from '@material/drawer';
-import { cssClasses } from '@material/drawer/constants';
+} from '@material/drawer/dist/mdc.drawer';
 import createFocusTrap from 'focus-trap';
 
+const { cssClasses } = MDCDismissibleDrawerFoundation;
 const strings = {
   PERMANENT: 'permanent',
   DISMISSABLE: 'dismissable',

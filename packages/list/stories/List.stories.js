@@ -18,10 +18,9 @@ import { Button } from '../../button';
 import { Checkbox } from '../../checkbox';
 import {
   Dialog,
-  DialogBody,
-  DialogFooter,
-  DialogHeader,
-  DialogHeaderTitle
+  DialogActions,
+  DialogContent,
+  DialogTitle
 } from '../../dialog';
 import { FormField } from '../../form-field';
 import { IconButton } from '../../icon-button';
@@ -102,16 +101,10 @@ class ListDemo extends React.Component {
     return (
       <React.Fragment>
         <List>{this.renderListItems()}</List>
-        <Dialog
-          open={dialogOpen}
-          onAccept={this.closeDialog}
-          onCancel={this.closeDialog}
-        >
-          <DialogHeader>
-            <DialogHeaderTitle>{dialogHeaderTitle}</DialogHeaderTitle>
-          </DialogHeader>
-          <DialogBody>{dialogBody}</DialogBody>
-          <DialogFooter />
+        <Dialog open={dialogOpen} onClose={this.closeDialog}>
+          <DialogTitle>{dialogHeaderTitle}</DialogTitle>
+          <DialogContent>{dialogBody}</DialogContent>
+          <DialogActions acceptButton closeButton onClose={this.closeDialog} />
         </Dialog>
       </React.Fragment>
     );
