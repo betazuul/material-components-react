@@ -16,10 +16,10 @@ import {
 import '../card.scss';
 import './card.stories.scss';
 
-const DemoCard = props => {
+const CardDemo = props => {
   const { actions, media, primaryAction, square, wide } = props;
   return (
-    <Card>
+    <Card className="card-demo">
       <CardContent action={primaryAction}>
         {media && (
           <CardMedia
@@ -32,15 +32,15 @@ const DemoCard = props => {
             </CardMediaContent>
           </CardMedia>
         )}
-        <div className="demo-card__primary">
-          <h2 className="demo-card__title mdc-typography--headline6">
+        <div className="card-demo__primary">
+          <h2 className="card-demo__title mdc-typography--headline6">
             Our Gears
           </h2>
-          <h3 className="demo-card__subtitle mdc-typography--subtitle2">
+          <h3 className="card-demo__subtitle mdc-typography--subtitle2">
             by Gearsy Gearson
           </h3>
         </div>
-        <div className="demo-card__secondary mdc-typography--body2">
+        <div className="card-demo__secondary mdc-typography--body2">
           Check it out. We have gears turning, wheels spinning, and clocks
           ticking.
         </div>
@@ -67,7 +67,7 @@ const DemoCard = props => {
   );
 };
 
-DemoCard.propTypes = {
+CardDemo.propTypes = {
   actions: PropTypes.bool,
   media: PropTypes.bool,
   primaryAction: PropTypes.bool,
@@ -75,7 +75,7 @@ DemoCard.propTypes = {
   wide: PropTypes.bool
 };
 
-DemoCard.defaultProps = {
+CardDemo.defaultProps = {
   actions: false,
   media: false,
   primaryAction: false,
@@ -84,27 +84,29 @@ DemoCard.defaultProps = {
 };
 
 storiesOf('Card', module)
-  .add('Simple', () => <Card className="demo-card--simple">Simple</Card>)
+  .add('Simple', () => (
+    <Card className="card-demo card-demo--simple">Simple</Card>
+  ))
   .add('Simple Outlined', () => (
-    <Card className="demo-card--simple" outlined>
+    <Card className="card-demo card-demo--simple" outlined>
       Simple
     </Card>
   ))
-  .add('Content', () => <DemoCard />)
-  .add('Content with Square Media', () => <DemoCard media square />)
-  .add('Content with Wide Media', () => <DemoCard media wide />)
-  .add('Content and Actions', () => <DemoCard actions />)
-  .add('Content with Media and Actions', () => <DemoCard media wide actions />)
-  .add('Primary Action Content', () => <DemoCard primaryAction />)
+  .add('Content', () => <CardDemo />)
+  .add('Content with Square Media', () => <CardDemo media square />)
+  .add('Content with Wide Media', () => <CardDemo media wide />)
+  .add('Content and Actions', () => <CardDemo actions />)
+  .add('Content with Media and Actions', () => <CardDemo media wide actions />)
+  .add('Primary Action Content', () => <CardDemo primaryAction />)
   .add('Primary Action Content with Square Media', () => (
-    <DemoCard primaryAction media square />
+    <CardDemo primaryAction media square />
   ))
   .add('Primary Action Content with Wide Media', () => (
-    <DemoCard primaryAction media wide />
+    <CardDemo primaryAction media wide />
   ))
   .add('Primary Action Content and Actions', () => (
-    <DemoCard primaryAction actions />
+    <CardDemo primaryAction actions />
   ))
   .add('Primary Action Content with Media and Actions', () => (
-    <DemoCard primaryAction media wide actions />
+    <CardDemo primaryAction media wide actions />
   ));

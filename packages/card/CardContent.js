@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { withRipple } from '../ripple';
+import { withRipple } from '@betazuul/ripple';
 
 const CardContent = ({ action, children, ...otherProps }) => {
   if (action) {
@@ -15,23 +15,37 @@ const CardContent = ({ action, children, ...otherProps }) => {
   return <CardContentDefault {...otherProps}>{children}</CardContentDefault>;
 };
 
-const CardContentDefault = ({
-  action,
-  children,
-  className,
-  initRipple,
-  ...otherProps
-}) => {
-  const classes = classnames('bmc-card__content', className, {
-    'mdc-card__primary-action': action
-  });
+class CardContentDefault extends React.Component {
+  get classes() {
+    const { action, className } = this.props;
+    return classnames('bmc-card__content', className, {
+      'mdc-card__primary-action': action
+    });
+  }
 
-  return (
-    <div className={classes} ref={initRipple} {...otherProps}>
-      {children}
-    </div>
-  );
-};
+  initCardContent = instance => {
+    if (!instance) return;
+    const { initRipple } = this.props;
+    initRipple(instance);
+  };
+
+  render() {
+    const {
+      action,
+      children,
+      className,
+      initRipple,
+      unbounded,
+      ...otherProps
+    } = this.props;
+
+    return (
+      <div className={this.classes} ref={this.initCardContent} {...otherProps}>
+        {children}
+      </div>
+    );
+  }
+}
 
 const CardPrimaryAction = withRipple(CardContentDefault);
 
@@ -49,14 +63,16 @@ CardContentDefault.propTypes = {
   action: PropTypes.bool,
   children: PropTypes.node,
   className: PropTypes.string,
-  initRipple: PropTypes.func
+  initRipple: PropTypes.func,
+  unbounded: PropTypes.bool
 };
 
 CardContentDefault.defaultProps = {
   action: false,
   children: null,
   className: null,
-  initRipple: () => {}
+  initRipple: () => {},
+  unbounded: false
 };
 
 export default CardContent;

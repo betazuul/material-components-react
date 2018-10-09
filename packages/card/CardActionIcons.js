@@ -15,7 +15,7 @@ const CardActionIcons = ({ children, className, ...otherProps }) => {
       );
 
       const childProps = {
-        childClasses,
+        className: childClasses,
         ...otherChildProps
       };
 

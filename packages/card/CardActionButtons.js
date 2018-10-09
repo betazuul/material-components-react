@@ -15,7 +15,7 @@ const CardActionButtons = ({ children, className, ...otherProps }) => {
       );
 
       const childProps = {
-        childClasses,
+        className: childClasses,
         ...otherChildProps
       };
 
