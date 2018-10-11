@@ -22,6 +22,8 @@ class Drawer extends React.Component {
     this.foundation = null;
     this.drawerEl = null;
     this.focusTrap = null;
+    this.focusTrapFactory = createFocusTrap;
+    this.initialFocusEl = null;
     this.previousFocus = null;
     this.state = {
       classList: new Set()
@@ -29,13 +31,14 @@ class Drawer extends React.Component {
   }
 
   componentDidMount() {
+    this.mounted = true;
     const { type } = this.props;
     const { PERMANENT, DISMISSABLE, MODAL } = strings;
 
-    this.drawerEl.addEventListener('transitionend', this.handleTransitionEnd);
-    this.drawerEl.addEventListener('keydown', this.handleKeydown);
-
     if (type !== PERMANENT) {
+      this.drawerEl.addEventListener('transitionend', this.handleTransitionEnd);
+      this.drawerEl.addEventListener('keydown', this.handleKeydown);
+
       if (type === DISMISSABLE) {
         this.foundation = new MDCDismissibleDrawerFoundation(this.adapter);
       }
@@ -44,8 +47,10 @@ class Drawer extends React.Component {
         this.foundation = new MDCModalDrawerFoundation(this.adapter);
         this.focusTrap = util.createFocusTrapInstance(
           this.drawerEl,
-          createFocusTrap
+          this.focusTrapFactory,
+          this.initialFocusEl
         );
+        this.focusTrap = null;
       }
 
       this.foundation.init();
@@ -54,41 +59,46 @@ class Drawer extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { open } = this.props;
-    const { CLOSING } = cssClasses;
-    if (prevProps.open !== open && this.foundation) {
+    const { open: prevOpen } = prevProps;
+    if (open !== prevOpen && this.foundation) {
       if (open) {
-        // Hack to open dismissable drawer
-        this.adapter.removeClass(CLOSING);
         this.foundation.open();
       } else {
         this.foundation.close();
-        // Hack to close drawer
-        this.adapter.addClass(CLOSING);
       }
     }
   }
 
   componentWillUnmount() {
+    this.mounted = false;
     const { type } = this.props;
     if (type !== strings.PERMANENT) {
-      this.drawerEl.removeEventListener('keydown', this.handleKeydown);
       this.drawerEl.removeEventListener(
         'transitionend',
         this.handleTransitionEnd
       );
+      this.drawerEl.removeEventListener('keydown', this.handleKeydown);
       this.foundation.destroy();
     }
   }
 
   get adapter() {
-    const { onClose, onOpen } = this.props;
     return {
-      addClass: className => this.drawerEl.classList.add(className),
-      removeClass: className => this.drawerEl.classList.remove(className),
-      hasClass: className => this.drawerEl.classList.contains(className),
+      addClass: className => {
+        if (!this.mounted) return;
+        const { classList } = this.state;
+        classList.add(className);
+        this.setState({ classList });
+      },
+      removeClass: className => {
+        if (!this.mounted) return;
+        const { classList } = this.state;
+        classList.delete(className);
+        this.setState({ classList });
+      },
+      hasClass: className => this.classes.split(' ').includes(className),
       elementHasClass: (element, className) =>
         element.classList.contains(className),
-      computeBoundingRect: () => this.drawerEl.getBoundingClientRect(),
       saveFocus: () => {
         this.previousFocus = document.activeElement;
       },
@@ -107,13 +117,21 @@ class Drawer extends React.Component {
         }
       },
       notifyClose: () => {
+        const { onClose } = this.props;
         if (onClose) onClose();
       },
       notifyOpen: () => {
+        const { onOpen } = this.props;
         if (onOpen) onOpen();
       },
-      trapFocus: () => this.focusTrap.activate(),
-      releaseFocus: () => this.focusTrap.deactivate()
+      trapFocus: () => {
+        if (!this.focusTrap) return;
+        this.focusTrap.activate();
+      },
+      releaseFocus: () => {
+        if (!this.focusTrap) return;
+        this.focusTrap.deactivate();
+      }
     };
   }
 
@@ -132,8 +150,6 @@ class Drawer extends React.Component {
   };
 
   handleScrimClick = () => {
-    const { onClose } = this.props;
-    if (onClose) onClose();
     if (this.foundation) this.foundation.handleScrimClick();
   };
 
@@ -155,6 +171,7 @@ class Drawer extends React.Component {
   };
 
   initDrawer = instance => {
+    if (!instance) return;
     this.drawerEl = instance;
   };
 
@@ -195,8 +212,8 @@ Drawer.defaultProps = {
   children: null,
   className: null,
   open: false,
-  onOpen: PropTypes.func,
-  onClose: PropTypes.func,
+  onOpen: () => {},
+  onClose: () => {},
   type: strings.PERMANENT
 };
 

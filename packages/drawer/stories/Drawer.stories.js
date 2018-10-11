@@ -30,10 +30,13 @@ const list = [
   { graphic: 'report', text: 'Spam' }
 ];
 
-class DemoDrawer extends React.Component {
-  state = {
-    open: false
-  };
+class DrawerDemo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false
+    };
+  }
 
   handleMenuClick = () => {
     const { open } = this.state;
@@ -48,6 +51,7 @@ class DemoDrawer extends React.Component {
   };
 
   handleClose = () => {
+    console.log('stories -- handleClose');
     this.setState({ open: false });
   };
 
@@ -66,7 +70,7 @@ class DemoDrawer extends React.Component {
               {list.map(
                 item =>
                   item.divider ? (
-                    <DrawerListDivider key={item.text} />
+                    <DrawerListDivider key={`divider-${item.text}`} />
                   ) : (
                     <DrawerListItem
                       onClick={this.handleListItemClick}
@@ -94,15 +98,15 @@ class DemoDrawer extends React.Component {
   }
 }
 
-DemoDrawer.propTypes = {
+DrawerDemo.propTypes = {
   type: PropTypes.oneOf([strings.PERMANENT, strings.DISMISSABLE, strings.MODAL])
 };
 
-DemoDrawer.defaultProps = {
+DrawerDemo.defaultProps = {
   type: strings.PERMANENT
 };
 
 storiesOf('Drawer', module)
-  .add('Permanent', () => <DemoDrawer />)
-  .add('Dismissable', () => <DemoDrawer type={strings.DISMISSABLE} />)
-  .add('Modal', () => <DemoDrawer type={strings.MODAL} />);
+  .add('Permanent', () => <DrawerDemo />)
+  .add('Dismissable', () => <DrawerDemo type={strings.DISMISSABLE} />)
+  .add('Modal', () => <DrawerDemo type={strings.MODAL} />);
