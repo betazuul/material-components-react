@@ -29,6 +29,8 @@ module.exports = (baseConfig, env, defaultConfig) => {
             path.resolve(__dirname, '../packages/icon-button/node_modules'),
             path.resolve(__dirname, '../packages/linear-progress/node_modules'),
             path.resolve(__dirname, '../packages/list/node_modules'),
+            path.resolve(__dirname, '../packages/menu/node_modules'),
+            path.resolve(__dirname, '../packages/menu-surface/node_modules'),
             path.resolve(__dirname, '../packages/radio/node_modules'),
             path.resolve(__dirname, '../packages/ripple/node_modules'),
             path.resolve(__dirname, '../packages/shape/node_modules')

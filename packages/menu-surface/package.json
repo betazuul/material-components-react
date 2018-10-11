@@ -1,0 +1,15 @@
+{
+  "name": "@betazuul/menu-surface",
+  "version": "0.4.3",
+  "description": "Material Component React Menu Surface",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/betazuul/material-components-react.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@material/menu-surface": "^0.40.1"
+  }
+}
