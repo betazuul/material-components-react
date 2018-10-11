@@ -3,36 +3,43 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { withRipple } from '@betazuul/ripple';
 
-const ListItem = ({
-  children,
-  className,
-  selected,
-  activated,
-  disabled,
-  initRipple,
-  unbounded,
-  ...otherProps
-}) => {
-  const classes = classnames('mdc-list-item', className, {
-    'mdc-list-item--selected': selected,
-    'mdc-list-item--activated': activated,
-    'mdc-list-item--disabled': disabled,
-  });
-
-  const renderChildren = () =>
-    React.Children.map(children, item => {
-      if (typeof item === 'string') {
-        return <span className="mdc-list-item__text">{item}</span>;
-      }
-      return item;
+class ListItem extends React.Component {
+  get classes() {
+    const { activated, className, disabled, selected } = this.props;
+    return classnames('mdc-list-item', className, {
+      'mdc-list-item--selected': selected,
+      'mdc-list-item--activated': activated,
+      'mdc-list-item--disabled': disabled
     });
+  }
 
-  return (
-    <li className={classes} ref={initRipple} {...otherProps}>
-      {renderChildren()}
-    </li>
-  );
-};
+  initListItem = instance => {
+    if (!instance) return;
+    const { initRipple } = this.props;
+    this.listItemEl = instance;
+    initRipple(this.listItemEl);
+  };
+
+  render() {
+    const {
+      /* eslint-disable */
+      activated,
+      className,
+      disabled,
+      initRipple,
+      selected,
+      unbounded,
+      /* eslint-enable */
+      children,
+      ...otherProps
+    } = this.props;
+    return (
+      <li className={this.classes} ref={this.initListItem} {...otherProps}>
+        {children}
+      </li>
+    );
+  }
+}
 
 ListItem.propTypes = {
   children: PropTypes.node,
@@ -53,4 +60,3 @@ ListItem.defaultProps = {
 };
 
 export default withRipple(ListItem);
-// export default ListItem;

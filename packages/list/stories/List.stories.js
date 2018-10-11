@@ -33,7 +33,19 @@ class ListDemo extends React.Component {
     this.state = {
       dialogBody: 'This is the body',
       dialogHeaderTitle: 'This is the title',
-      dialogOpen: false
+      dialogOpen: false,
+      selectedIndex: -1
+    };
+  }
+
+  get styles() {
+    const { twoLine } = this.props;
+    if (twoLine) return {};
+    return {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      width: '50%'
     };
   }
 
@@ -49,177 +61,212 @@ class ListDemo extends React.Component {
     });
   };
 
+  selectItem = selectedIndex => {
+    const { singleSelection } = this.props;
+    if (!singleSelection) return;
+    console.log('index:', selectedIndex);
+    this.setState({ selectedIndex });
+  };
+
   renderListItems() {
-    const { count } = this.props;
+    const { selectedIndex } = this.state;
+    const {
+      checkbox,
+      count,
+      dialog,
+      disabled,
+      iconButton,
+      text,
+      twoLine
+    } = this.props;
+
     const listItems = [];
     for (let i = 0; i < count; i += 1) {
-      const text = `Item ${i}`;
-      listItems.push(text);
+      const item = `Item ${i}`;
+      listItems.push(item);
     }
 
     return listItems.map((listItem, index) => (
-      <ListItem disabled key={listItem}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            width: '50%'
-          }}
-        >
-          <div>
-            <FormField>
-              <Checkbox
-                id={`checkbox-${index}-id`}
-                label={listItem}
-                name={`checkbox-${index}-name`}
-                value={`checkbox-${index}-value`}
+      <ListItem
+        disabled={disabled}
+        selected={selectedIndex === index}
+        onClick={() => this.selectItem(index)}
+        key={listItem}
+      >
+        <div style={this.styles}>
+          {checkbox && (
+            <div>
+              <FormField>
+                <Checkbox
+                  id={`checkbox-${index}-id`}
+                  label={listItem}
+                  name={`checkbox-${index}-name`}
+                  value={`checkbox-${index}-value`}
+                />
+              </FormField>
+            </div>
+          )}
+          {dialog && (
+            <div>
+              <Button raised onClick={() => this.openDialog(listItem)}>
+                Default
+              </Button>
+            </div>
+          )}
+          {iconButton && (
+            <div>
+              <IconButton
+                material
+                icon="favorite_border"
+                iconOn="favorite"
+                iconLabel="Add to favorites"
               />
-            </FormField>
-          </div>
-          <div>
-            <Button raised onClick={() => this.openDialog(listItem)}>
-              Default
-            </Button>
-          </div>
-          <div>
-            <IconButton
-              material
-              icon="favorite_border"
-              iconOn="favorite"
-              iconLabel="Add to favorites"
-            />
-          </div>
+            </div>
+          )}
+          {text && `Item ${index}`}
         </div>
+        {twoLine && (
+          <ListItemText>
+            <ListItemPrimaryText>{`Primary Text ${index}`}</ListItemPrimaryText>
+            <ListItemSecondaryText>Secondary Text</ListItemSecondaryText>
+          </ListItemText>
+        )}
       </ListItem>
     ));
   }
 
+  renderGroups() {
+    const { groups } = this.props;
+    const listGroups = [];
+    for (let i = 0; i < groups; i += 1) {
+      listGroups.push(this.renderListItems());
+    }
+
+    return listGroups.map((group, index) => {
+      const groupSubheader = `List Group ${index}`;
+      return (
+        <React.Fragment>
+          <ListGroupSubheader>{groupSubheader}</ListGroupSubheader>
+          <List>{group}</List>
+        </React.Fragment>
+      );
+    });
+  }
+
   render() {
     const { dialogBody, dialogHeaderTitle, dialogOpen } = this.state;
+    const { dialog, dividers, graphics, groups, twoLine } = this.props;
+
+    if (dividers) {
+      return (
+        <ListGroup>
+          <ListGroupSubheader>List with basic dividers</ListGroupSubheader>
+          <List>
+            <ListItem>Item 1</ListItem>
+            <ListDivider />
+            <ListItem>Item 2</ListItem>
+            <ListDivider />
+            <ListItem>Item 3</ListItem>
+          </List>
+          <ListDivider hr />
+          <ListGroupSubheader>List with inset dividers</ListGroupSubheader>
+          <List>
+            <ListItem>Item 1</ListItem>
+            <ListDivider inset />
+            <ListItem>Item 2</ListItem>
+            <ListDivider inset />
+            <ListItem>Item 3</ListItem>
+          </List>
+          <ListDivider hr />
+          <ListGroupSubheader>List with padded dividesr</ListGroupSubheader>
+          <List>
+            <ListItem>Item 1</ListItem>
+            <ListDivider padded />
+            <ListItem>Item 2</ListItem>
+            <ListDivider padded />
+            <ListItem>Item 3</ListItem>
+          </List>
+        </ListGroup>
+      );
+    }
+
+    if (graphics) {
+      return (
+        <List>
+          <ListItem>
+            <ListItemGraphic>power_settings_new</ListItemGraphic>
+            Item with graphic
+          </ListItem>
+          <ListItem>
+            Item with meta
+            <ListItemMeta>info</ListItemMeta>
+          </ListItem>
+          <ListItem>
+            <ListItemGraphic>menu</ListItemGraphic>
+            Item with graphic and meta
+            <ListItemMeta>more_vert</ListItemMeta>
+          </ListItem>
+        </List>
+      );
+    }
+    if (groups && groups > 0) {
+      return this.renderGroups();
+    }
 
     return (
       <React.Fragment>
-        <List>{this.renderListItems()}</List>
-        <Dialog open={dialogOpen} onClose={this.closeDialog}>
-          <DialogTitle>{dialogHeaderTitle}</DialogTitle>
-          <DialogContent>{dialogBody}</DialogContent>
-          <DialogActions acceptButton closeButton onClose={this.closeDialog} />
-        </Dialog>
+        <List twoLine={twoLine}>{this.renderListItems()}</List>
+        {dialog && (
+          <Dialog open={dialogOpen} onClose={this.closeDialog}>
+            <DialogTitle>{dialogHeaderTitle}</DialogTitle>
+            <DialogContent>{dialogBody}</DialogContent>
+            <DialogActions
+              acceptButton
+              closeButton
+              onClose={this.closeDialog}
+            />
+          </Dialog>
+        )}
       </React.Fragment>
     );
   }
 }
 
 ListDemo.propTypes = {
-  count: PropTypes.number
+  checkbox: PropTypes.bool,
+  count: PropTypes.number,
+  dialog: PropTypes.bool,
+  disabled: PropTypes.bool,
+  dividers: PropTypes.bool,
+  graphics: PropTypes.bool,
+  groups: PropTypes.number,
+  iconButton: PropTypes.bool,
+  singleSelection: PropTypes.bool,
+  text: PropTypes.bool,
+  twoLine: PropTypes.bool
 };
 
 ListDemo.defaultProps = {
-  count: 1
+  checkbox: false,
+  count: 1,
+  dialog: false,
+  disabled: false,
+  dividers: false,
+  graphics: false,
+  groups: 0,
+  iconButton: false,
+  singleSelection: false,
+  text: false,
+  twoLine: false
 };
 
 storiesOf('List', module)
-  .add('Test', () => <ListDemo count={100} />)
-  .add('Basic', () => (
-    <List>
-      <ListItem>Item 1</ListItem>
-      <ListItem>Item 2</ListItem>
-      <ListItem>Item 3</ListItem>
-      <ListItem>Item 4</ListItem>
-    </List>
+  .add('Test', () => (
+    <ListDemo count={100} checkbox dialog disabled iconButton />
   ))
-  .add('Selected', () => (
-    <List singleSelection>
-      <ListItem>Item 1</ListItem>
-      <ListItem>Item 2</ListItem>
-      <ListItem selected>Selected Item</ListItem>
-      <ListItem>Item 4</ListItem>
-      <ListItem>Item 5</ListItem>
-    </List>
-  ))
-  .add('Two-Line', () => (
-    <List twoLine>
-      <ListItem>
-        <ListItemText>
-          <ListItemPrimaryText>Primary Text</ListItemPrimaryText>
-          <ListItemSecondaryText>Secondary Text</ListItemSecondaryText>
-        </ListItemText>
-      </ListItem>
-      <ListItem>
-        <ListItemText>
-          <ListItemPrimaryText>Primary Text</ListItemPrimaryText>
-          <ListItemSecondaryText>Secondary Text</ListItemSecondaryText>
-        </ListItemText>
-      </ListItem>
-      <ListItem>
-        <ListItemText>
-          <ListItemPrimaryText>Primary Text</ListItemPrimaryText>
-          <ListItemSecondaryText>Secondary Text</ListItemSecondaryText>
-        </ListItemText>
-      </ListItem>
-    </List>
-  ))
-  .add('Groups', () => (
-    <ListGroup>
-      <ListGroupSubheader>List 1</ListGroupSubheader>
-      <List>
-        <ListItem>Item 1</ListItem>
-        <ListItem>Item 2</ListItem>
-        <ListItem>Item 3</ListItem>
-      </List>
-      <ListGroupSubheader>List 2</ListGroupSubheader>
-      <List>
-        <ListItem>Item 1</ListItem>
-        <ListItem>Item 2</ListItem>
-        <ListItem>Item 3</ListItem>
-      </List>
-    </ListGroup>
-  ))
-  .add('Dividers', () => (
-    <ListGroup>
-      <ListGroupSubheader>List with basic dividers</ListGroupSubheader>
-      <List>
-        <ListItem>Item 1</ListItem>
-        <ListDivider />
-        <ListItem>Item 2</ListItem>
-        <ListDivider />
-        <ListItem>Item 3</ListItem>
-      </List>
-      <ListDivider hr />
-      <ListGroupSubheader>List with inset dividers</ListGroupSubheader>
-      <List>
-        <ListItem>Item 1</ListItem>
-        <ListDivider inset />
-        <ListItem>Item 2</ListItem>
-        <ListDivider inset />
-        <ListItem>Item 3</ListItem>
-      </List>
-      <ListDivider hr />
-      <ListGroupSubheader>List with padded dividesr</ListGroupSubheader>
-      <List>
-        <ListItem>Item 1</ListItem>
-        <ListDivider padded />
-        <ListItem>Item 2</ListItem>
-        <ListDivider padded />
-        <ListItem>Item 3</ListItem>
-      </List>
-    </ListGroup>
-  ))
-  .add('Graphics and Meta', () => (
-    <List>
-      <ListItem>
-        <ListItemGraphic icon>power_settings_new</ListItemGraphic>
-        Item with graphic
-      </ListItem>
-      <ListItem>
-        Item with meta
-        <ListItemMeta icon>info</ListItemMeta>
-      </ListItem>
-      <ListItem>
-        <ListItemGraphic icon>menu</ListItemGraphic>
-        Item with graphic and meta
-        <ListItemMeta icon>more_vert</ListItemMeta>
-      </ListItem>
-    </List>
-  ));
+  .add('Basic', () => <ListDemo count={5} text />)
+  .add('Selected', () => <ListDemo count={5} singleSelection text />)
+  .add('Two-Line', () => <ListDemo count={5} twoLine />)
+  .add('Groups', () => <ListDemo groups={2} count={5} text />)
+  .add('Dividers', () => <ListDemo dividers />)
+  .add('Graphics and Meta', () => <ListDemo graphics />);
