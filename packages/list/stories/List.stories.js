@@ -25,7 +25,6 @@ import {
 import { FormField } from '../../form-field';
 import { IconButton } from '../../icon-button';
 import '../list.scss';
-import './List.stories.scss';
 
 class ListDemo extends React.Component {
   constructor(props) {
