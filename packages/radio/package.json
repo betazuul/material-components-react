@@ -1,6 +1,6 @@
 {
   "name": "@betazuul/radio",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "Material Component React Radio",
   "main": "index.js",
   "repository": {
@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@betazuul/ripple": "^0.4.3",
+    "@betazuul/ripple": "^0.4.4",
     "@material/radio": "^0.40.1"
   }
 }
