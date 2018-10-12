@@ -183,15 +183,15 @@ class MenuSurface extends React.Component {
       setMaxHeight: maxHeight => this.setState({ maxHeight })
     };
 
-    const { classList } = this.state;
     return Object.assign(
       {
         addClass: className => {
-          // const { classList } = this.state;
-          this.setState({ classList: classList.add(className) });
+          const { classList } = this.state;
+          classList.add(className);
+          this.setState({ classList });
         },
         removeClass: className => {
-          // const { classList } = this.state;
+          const { classList } = this.state;
           classList.delete(className);
           this.setState({ classList });
         },
@@ -270,10 +270,10 @@ class MenuSurface extends React.Component {
 
   render() {
     const {
-      /* eslint-disable */
       anchorCorner,
       anchorElement,
       anchorMargin,
+      children,
       className,
       coordinates,
       fixed,
@@ -282,12 +282,10 @@ class MenuSurface extends React.Component {
       onKeyDown,
       styles,
       quickOpen,
-      /* eslint-enable */
-      children,
       ...otherProps
     } = this.props;
     return (
-      /* eslint-disable jsx-a11y/no-static-element-interactions */
+      // eslint-disable-next-line
       <div
         className={this.classes}
         onKeyDown={this.handleKeydown}
@@ -297,15 +295,14 @@ class MenuSurface extends React.Component {
       >
         {children}
       </div>
-      /* eslint-enable jsx-a11y/no-static-element-interactions */
     );
   }
 }
 
 MenuSurface.propTypes = {
   anchorCorner: PropTypes.number,
-  anchorElement: PropTypes.object,
-  anchorMargin: PropTypes.object,
+  anchorElement: PropTypes.objectOf(PropTypes.any),
+  anchorMargin: PropTypes.objectOf(PropTypes.any),
   children: PropTypes.node,
   className: PropTypes.string,
   fixed: PropTypes.bool,
@@ -317,7 +314,7 @@ MenuSurface.propTypes = {
   onKeyDown: PropTypes.func,
   onOpen: PropTypes.func,
   open: PropTypes.bool,
-  styles: PropTypes.object,
+  styles: PropTypes.objectOf(PropTypes.any),
   quickOpen: PropTypes.bool
 };
 

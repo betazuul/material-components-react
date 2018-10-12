@@ -6,6 +6,7 @@ import { MenuSurface, Corner } from '..';
 import { Button } from '../../button';
 import { List, ListItem } from '../../list';
 import '../menu-surface.scss';
+import './MenuSurface.stories.scss';
 
 class MenuSurfaceDemo extends React.Component {
   constructor(props) {
@@ -45,19 +46,21 @@ class MenuSurfaceDemo extends React.Component {
   render() {
     const { anchorElement, open } = this.state;
     return (
-      <div className="mdc-menu-surface--anchor" ref={this.setAnchorElement}>
-        <Button raised onClick={() => this.setState({ open: true })}>
-          Open Menu
-        </Button>
-        <MenuSurface
-          open={open}
-          anchorCorner={Corner.BOTTOM_START}
-          onClick={() => this.setState({ open: false })}
-          onClose={() => this.setState({ open: false })}
-          anchorElement={anchorElement}
-        >
-          {this.renderMenuItems()}
-        </MenuSurface>
+      <div className="demo">
+        <div className="mdc-menu-surface--anchor" ref={this.setAnchorElement}>
+          <Button raised onClick={() => this.setState({ open: true })}>
+            Open Menu
+          </Button>
+          <MenuSurface
+            open={open}
+            anchorCorner={Corner.BOTTOM_START}
+            onClick={() => this.setState({ open: false })}
+            onClose={() => this.setState({ open: false })}
+            anchorElement={anchorElement}
+          >
+            {this.renderMenuItems()}
+          </MenuSurface>
+        </div>
       </div>
     );
   }

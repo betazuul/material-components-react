@@ -19,51 +19,53 @@ import './card.stories.scss';
 const CardDemo = props => {
   const { actions, media, primaryAction, square, wide } = props;
   return (
-    <Card className="card-demo">
-      <CardContent action={primaryAction}>
-        {media && (
-          <CardMedia
-            imageUrl="https://betazuul.com/assets/gears.jpg"
-            square={square}
-            wide={wide}
-          >
-            <CardMediaContent style={{ color: 'white' }}>
-              Media Content
-            </CardMediaContent>
-          </CardMedia>
+    <div className="demo">
+      <Card className="card-demo">
+        <CardContent action={primaryAction}>
+          {media && (
+            <CardMedia
+              imageUrl="https://betazuul.com/assets/gears.jpg"
+              square={square}
+              wide={wide}
+            >
+              <CardMediaContent style={{ color: 'white' }}>
+                Media Content
+              </CardMediaContent>
+            </CardMedia>
+          )}
+          <div className="card-demo__primary">
+            <h2 className="card-demo__title mdc-typography--headline6">
+              Our Gears
+            </h2>
+            <h3 className="card-demo__subtitle mdc-typography--subtitle2">
+              by Gearsy Gearson
+            </h3>
+          </div>
+          <div className="card-demo__secondary mdc-typography--body2">
+            Check it out. We have gears turning, wheels spinning, and clocks
+            ticking.
+          </div>
+        </CardContent>
+        {actions && (
+          <CardActions>
+            <CardActionButtons>
+              <Button>Read</Button>
+              <Button>Bookmark</Button>
+            </CardActionButtons>
+            <CardActionIcons>
+              <IconButton
+                material
+                icon="favorite_border"
+                iconOn="favorite"
+                iconLabel="Add to favorites"
+              />
+              <IconButton material icon="share" />
+              <IconButton material icon="more_vert" />
+            </CardActionIcons>
+          </CardActions>
         )}
-        <div className="card-demo__primary">
-          <h2 className="card-demo__title mdc-typography--headline6">
-            Our Gears
-          </h2>
-          <h3 className="card-demo__subtitle mdc-typography--subtitle2">
-            by Gearsy Gearson
-          </h3>
-        </div>
-        <div className="card-demo__secondary mdc-typography--body2">
-          Check it out. We have gears turning, wheels spinning, and clocks
-          ticking.
-        </div>
-      </CardContent>
-      {actions && (
-        <CardActions>
-          <CardActionButtons>
-            <Button>Read</Button>
-            <Button>Bookmark</Button>
-          </CardActionButtons>
-          <CardActionIcons>
-            <IconButton
-              material
-              icon="favorite_border"
-              iconOn="favorite"
-              iconLabel="Add to favorites"
-            />
-            <IconButton material icon="share" />
-            <IconButton material icon="more_vert" />
-          </CardActionIcons>
-        </CardActions>
-      )}
-    </Card>
+      </Card>
+    </div>
   );
 };
 
@@ -85,12 +87,16 @@ CardDemo.defaultProps = {
 
 storiesOf('Card', module)
   .add('Simple', () => (
-    <Card className="card-demo card-demo--simple">Simple</Card>
+    <div className="demo">
+      <Card className="card-demo card-demo--simple">Simple</Card>
+    </div>
   ))
   .add('Simple Outlined', () => (
-    <Card className="card-demo card-demo--simple" outlined>
-      Simple
-    </Card>
+    <div className="demo">
+      <Card className="card-demo card-demo--simple" outlined>
+        Simple
+      </Card>
+    </div>
   ))
   .add('Content', () => <CardDemo />)
   .add('Content with Square Media', () => <CardDemo media square />)

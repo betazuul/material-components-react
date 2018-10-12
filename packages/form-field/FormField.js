@@ -12,14 +12,7 @@ class FormField extends React.Component {
   }
 
   render() {
-    const {
-      /* eslint-disable no-unused-vars */
-      alignEnd,
-      children,
-      className,
-      /* eslint-enable no-unused-vars */
-      ...otherProps
-    } = this.props;
+    const { alignEnd, children, className, ...otherProps } = this.props;
 
     return (
       <div className={this.classes} {...otherProps}>

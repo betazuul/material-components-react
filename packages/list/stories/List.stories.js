@@ -25,7 +25,7 @@ import {
 import { FormField } from '../../form-field';
 import { IconButton } from '../../icon-button';
 import '../list.scss';
-import './List.stories.css';
+import './List.stories.scss';
 
 class ListDemo extends React.Component {
   constructor(props) {
@@ -145,7 +145,7 @@ class ListDemo extends React.Component {
     return listGroups.map((group, index) => {
       const groupSubheader = `List Group ${index}`;
       return (
-        <React.Fragment>
+        <React.Fragment key={groupSubheader}>
           <ListGroupSubheader>{groupSubheader}</ListGroupSubheader>
           <List>{group}</List>
         </React.Fragment>
@@ -178,7 +178,7 @@ class ListDemo extends React.Component {
             <ListItem>Item 3</ListItem>
           </List>
           <ListDivider hr />
-          <ListGroupSubheader>List with padded dividesr</ListGroupSubheader>
+          <ListGroupSubheader>List with padded dividers</ListGroupSubheader>
           <List>
             <ListItem>Item 1</ListItem>
             <ListDivider padded />

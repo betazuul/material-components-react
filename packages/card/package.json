@@ -11,6 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "@betazuul/ripple": "^0.4.3",
-    "@material/card": "^0.40.0"
+    "@material/card": "^0.40.1"
   }
 }

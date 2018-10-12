@@ -72,7 +72,7 @@ const withRipple = WrappedComponent => {
           if (!this.mounted) {
             return;
           }
-          
+
           this.setState({ classList: classList.add(className) });
         },
         removeClass: className => {
@@ -190,8 +190,6 @@ const withRipple = WrappedComponent => {
 
     render() {
       const {
-        /* start black list of otherprops */
-        /* eslint-disable */
         unbounded,
         style,
         className,
@@ -203,8 +201,6 @@ const withRipple = WrappedComponent => {
         onKeyUp,
         onFocus,
         onBlur,
-        /* eslint-enable */
-        /* end black list of otherprops */
         ...otherProps
       } = this.props;
 

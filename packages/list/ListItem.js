@@ -22,15 +22,13 @@ class ListItem extends React.Component {
 
   render() {
     const {
-      /* eslint-disable */
       activated,
+      children,
       className,
       disabled,
       initRipple,
       selected,
       unbounded,
-      /* eslint-enable */
-      children,
       ...otherProps
     } = this.props;
     return (

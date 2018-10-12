@@ -16,11 +16,11 @@ class Checkbox extends React.Component {
   }
 
   componentDidMount() {
-    const { checked, disabled, indeterminate, value } = this.props;
     this.mounted = true;
     this.foundation = new MDCCheckboxFoundation(this.adapter);
     this.foundation.init();
 
+    const { checked, disabled, indeterminate, value } = this.props;
     if (checked) this.nativeCheckboxEl.checked = checked;
     if (disabled) this.foundation.setDisabled(disabled);
     if (indeterminate) this.nativeCheckboxEl.indeterminate = indeterminate;
@@ -33,14 +33,16 @@ class Checkbox extends React.Component {
   }
 
   get adapter() {
-    const { classList } = this.state;
     return {
       addClass: className => {
         if (!this.mounted) return;
-        this.setState({ classList: classList.add(className) });
+        const { classList } = this.state;
+        classList.add(className);
+        this.setState({ classList });
       },
       removeClass: className => {
         if (!this.mounted) return;
+        const { classList } = this.state;
         classList.delete(className);
         this.setState({ classList });
       },
@@ -110,7 +112,6 @@ class Checkbox extends React.Component {
 
   render() {
     const {
-      /* eslint-disable no-unused-vars */
       checked,
       className,
       disabled,
@@ -121,7 +122,6 @@ class Checkbox extends React.Component {
       name,
       unbounded,
       value,
-      /* eslint-enable no-unused-vars */
       ...otherProps
     } = this.props;
 

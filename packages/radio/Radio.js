@@ -16,11 +16,11 @@ class Radio extends React.Component {
   }
 
   componentDidMount() {
-    const { checked, disabled, value } = this.props;
     this.mounted = true;
     this.foundation = new MDCRadioFoundation(this.adapter);
     this.foundation.init();
 
+    const { checked, disabled, value } = this.props;
     if (checked) this.foundation.setChecked(checked);
     if (disabled) this.foundation.setDisabled(disabled);
     if (value) this.foundation.setValue(value);
@@ -32,14 +32,16 @@ class Radio extends React.Component {
   }
 
   get adapter() {
-    const { classList } = this.state;
     return {
       addClass: className => {
         if (!this.mounted) return;
-        this.setState({ classList: classList.add(className) });
+        const { classList } = this.state;
+        classList.add(className);
+        this.setState({ classList });
       },
       removeClass: className => {
         if (!this.mounted) return;
+        const { classList } = this.state;
         classList.delete(className);
         this.setState({ classList });
       },
@@ -53,14 +55,14 @@ class Radio extends React.Component {
     return classnames('mdc-radio', Array.from(classList), className);
   }
 
-  handleLabelClick = e => {
+  handleLabelClick = event => {
     if (this.foundation.isDisabled()) return;
 
     const { onMouseDown, onMouseUp } = this.props;
-    if (onMouseDown) onMouseDown(e);
+    if (onMouseDown) onMouseDown(event);
     if (onMouseUp) {
       setTimeout(() => {
-        onMouseUp(e);
+        onMouseUp(event);
       }, 100);
     }
 
@@ -97,7 +99,6 @@ class Radio extends React.Component {
 
   render() {
     const {
-      /* eslint-disable no-unused-vars */
       checked,
       className,
       disabled,
@@ -107,7 +108,6 @@ class Radio extends React.Component {
       name,
       unbounded,
       value,
-      /* eslint-enable no-unused-vars */
       ...otherProps
     } = this.props;
 

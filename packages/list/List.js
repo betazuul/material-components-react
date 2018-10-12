@@ -178,19 +178,20 @@ class List extends React.Component {
   };
 
   initList = instance => {
+    if (!instance) return;
     this.listEl = instance;
   };
 
   render() {
     const {
+      avatarList,
       children,
       className,
-      orientation,
-      nonInteractive,
       dense,
-      avatarList,
-      twoLine,
+      nonInteractive,
+      orientation,
       singleSelection,
+      twoLine,
       ...otherProps
     } = this.props;
 
@@ -214,25 +215,25 @@ class List extends React.Component {
 }
 
 List.propTypes = {
+  avatarList: PropTypes.bool,
   children: PropTypes.node,
   className: PropTypes.string,
-  orientation: PropTypes.oneOf(['horizontal', 'vertical']),
-  nonInteractive: PropTypes.bool,
   dense: PropTypes.bool,
-  avatarList: PropTypes.bool,
+  nonInteractive: PropTypes.bool,
+  orientation: PropTypes.oneOf(['horizontal', 'vertical']),
+  singleSelection: PropTypes.bool,
   twoLine: PropTypes.bool,
-  singleSelection: PropTypes.bool
 };
 
 List.defaultProps = {
+  avatarList: false,
   children: null,
   className: null,
-  orientation: 'vertical',
-  nonInteractive: false,
   dense: false,
-  avatarList: false,
+  nonInteractive: false,
+  orientation: 'vertical',
+  singleSelection: false,
   twoLine: false,
-  singleSelection: false
 };
 
 export default List;

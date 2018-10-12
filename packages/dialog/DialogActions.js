@@ -82,7 +82,7 @@ class DialogButtonDefault extends React.Component {
       children,
       className,
       initRipple,
-      unbounded, // eslint-disable-line
+      unbounded,
       ...otherProps
     } = this.props;
 

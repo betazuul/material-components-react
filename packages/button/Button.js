@@ -43,7 +43,7 @@ export class Button extends Component {
       initRipple,
       outlined,
       raised,
-      unbounded, // eslint-disable-line no-unused-vars
+      unbounded,
       unelevated,
       ...otherProps
     } = this.props;

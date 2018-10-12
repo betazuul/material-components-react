@@ -6,5 +6,5 @@ const loadStories = () => {
   require('glob-loader!./stories.pattern');
 };
 
-addDecorator(story => <div className="demo mdc-typography">{story()}</div>);
+addDecorator(story => <div className="mdc-typography">{story()}</div>);
 configure(loadStories, module);

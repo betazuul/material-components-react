@@ -69,9 +69,8 @@ class IconButton extends React.Component {
 
   initIconButton = instance => {
     if (!instance) return;
-
-    this.iconButtonEl = instance;
     const { initRipple } = this.props;
+    this.iconButtonEl = instance;
     initRipple(this.iconButtonEl);
   };
 

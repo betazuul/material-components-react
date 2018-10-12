@@ -1,8 +1,9 @@
-.demo {
-  width: 400px;
-}
 .demo-button {
+  button {
+    margin-right: 32px;
+  }
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: center;
+  min-height: 100vh !important;
 }

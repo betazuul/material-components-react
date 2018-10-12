@@ -64,21 +64,23 @@ class Dialog extends React.Component {
   }
 
   get adapter() {
-    const { scrollable } = this.props;
     return {
       addClass: className => {
         if (!this.mounted) return;
-        this.dialogEl.classList.add(className);
+        const { classList } = this.state;
+        classList.add(className);
+        this.setState({ classList });
       },
       removeClass: className => {
         if (!this.mounted) return;
-        this.dialogEl.classList.remove(className);
+        const { classList } = this.state;
+        classList.delete(className);
+        this.setState({ classList });
       },
-      hasClass: className => this.dialogEl.classList.contains(className),
+      hasClass: className => this.classes.split(' ').includes(className),
       addBodyClass: className => document.body.classList.add(className),
       removeBodyClass: className => document.body.classList.remove(className),
       eventTargetMatches: (target, selector) => matches(target, selector),
-      computeBoundingRect: () => this.dialogEl.getBoundingClientRect(),
       trapFocus: () => {
         if (!this.focusTrap) return;
         this.focusTrap.activate();
@@ -87,7 +89,10 @@ class Dialog extends React.Component {
         if (!this.focusTrap) return;
         this.focusTrap.deactivate();
       },
-      isContentScrollable: () => scrollable,
+      isContentScrollable: () => {
+        const { scrollable } = this.props;
+        return scrollable;
+      },
       areButtonsStacked: () => util.areTopsMisaligned(this.buttonsEl),
       getActionFromEvent: event => {
         const element = closest(event.target, `[${strings.ACTION_ATTRIBUTE}]`);
@@ -131,13 +136,11 @@ class Dialog extends React.Component {
   render() {
     const {
       children,
-      /* eslint-disable */
       className,
       onClose,
       open,
       scrollable,
       simple,
-      /* eslint-enable */
       ...otherProps
     } = this.props;
 

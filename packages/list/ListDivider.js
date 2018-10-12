@@ -27,18 +27,18 @@ const ListDivider = ({
 ListDivider.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
-  padded: PropTypes.bool,
-  inset: PropTypes.bool,
   hr: PropTypes.bool,
+  inset: PropTypes.bool,
+  padded: PropTypes.bool,
   role: PropTypes.string
 };
 
 ListDivider.defaultProps = {
   children: null,
   className: null,
-  padded: false,
-  inset: false,
   hr: false,
+  inset: false,
+  padded: false,
   role: 'separator'
 };
 
