@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { storiesOf } from '@storybook/react';
 
 import {
-  Drawer,
   DrawerContent,
   DrawerHeader,
   DrawerHeaderTitle,
@@ -12,6 +11,9 @@ import {
   DrawerListItem,
   DrawerListItemGraphic,
   DrawerListDivider,
+  DismissableDrawer,
+  ModalDrawer,
+  PermanentDrawer,
   strings
 } from '..';
 import '../drawer.scss';
@@ -55,46 +57,71 @@ class DrawerDemo extends React.Component {
     this.setState({ open: false });
   };
 
+  renderDrawerBody() {
+    return (
+      <React.Fragment>
+        <DrawerHeader>
+          <DrawerHeaderTitle>Header Title</DrawerHeaderTitle>
+          <DrawerHeaderSubtitle>Header Subtitle</DrawerHeaderSubtitle>
+        </DrawerHeader>
+        <DrawerContent>
+          <DrawerList>
+            {list.map(
+              item =>
+                item.divider ? (
+                  <DrawerListDivider key={`divider-${item.text}`} />
+                ) : (
+                  <DrawerListItem
+                    onClick={this.handleListItemClick}
+                    key={item.text}
+                  >
+                    {item.graphic && (
+                      <DrawerListItemGraphic icon>
+                        {item.graphic}
+                      </DrawerListItemGraphic>
+                    )}
+                    {item.text}
+                  </DrawerListItem>
+                )
+            )}
+          </DrawerList>
+        </DrawerContent>
+      </React.Fragment>
+    );
+  }
+
   render() {
     const { open } = this.state;
     const { type } = this.props;
-    return (
-      <React.Fragment>
-        <Drawer type={type} open={open} onClose={this.handleClose}>
-          <DrawerHeader>
-            <DrawerHeaderTitle>Header Title</DrawerHeaderTitle>
-            <DrawerHeaderSubtitle>Header Subtitle</DrawerHeaderSubtitle>
-          </DrawerHeader>
-          <DrawerContent>
-            <DrawerList>
-              {list.map(
-                item =>
-                  item.divider ? (
-                    <DrawerListDivider key={`divider-${item.text}`} />
-                  ) : (
-                    <DrawerListItem
-                      onClick={this.handleListItemClick}
-                      key={item.text}
-                    >
-                      {item.graphic && (
-                        <DrawerListItemGraphic icon>
-                          {item.graphic}
-                        </DrawerListItemGraphic>
-                      )}
-                      {item.text}
-                    </DrawerListItem>
-                  )
-              )}
-            </DrawerList>
-          </DrawerContent>
-        </Drawer>
-        {type !== strings.PERMANENT && (
-          <div className="mdc-drawer-app-content">
-            <IconButton material icon="menu" onClick={this.handleMenuClick} />
-          </div>
-        )}
-      </React.Fragment>
+    const MenuIcon = () => (
+      <div className="mdc-drawer-app-content">
+        <IconButton material icon="menu" onClick={this.handleMenuClick} />
+      </div>
     );
+    switch (type) {
+      case strings.DISMISSABLE:
+        return (
+          <React.Fragment>
+            <DismissableDrawer open={open} onClose={this.handleClose}>
+              {this.renderDrawerBody()}
+            </DismissableDrawer>
+            <MenuIcon />
+          </React.Fragment>
+        );
+      case strings.MODAL:
+        return (
+          <React.Fragment>
+            <ModalDrawer open={open} onClose={this.handleClose}>
+              {this.renderDrawerBody()}
+            </ModalDrawer>
+            <MenuIcon />
+          </React.Fragment>
+        );
+      case strings.PERMANENT:
+        return <PermanentDrawer>{this.renderDrawerBody()}</PermanentDrawer>;
+      default:
+        return null;
+    }
   }
 }
 

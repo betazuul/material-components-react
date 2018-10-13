@@ -17,26 +17,30 @@ const DialogActions = ({
 }) => {
   const classes = classnames('mdc-dialog__actions', className);
 
+  const renderDialogButton = action => {
+    const accept = action === 'accept';
+    const button = accept ? acceptButton : closeButton;
+    const buttonClass = accept ? acceptButtonClass : closeButtonClass;
+    const buttonLabel = accept ? acceptButtonLabel : closeButtonLabel;
+    const onCloseArg = accept ? action : undefined;
+    
+    return (
+      button && (
+        <DialogButton
+          className={buttonClass}
+          action={action}
+          onClick={() => onClose(onCloseArg)}
+        >
+          {buttonLabel}
+        </DialogButton>
+      )
+    );
+  };
+
   return (
     <footer className={classes} {...otherProps}>
-      {closeButton && (
-        <DialogButton
-          className={closeButtonClass}
-          action="close"
-          onClick={() => onClose()}
-        >
-          {closeButtonLabel}
-        </DialogButton>
-      )}
-      {acceptButton && (
-        <DialogButton
-          className={acceptButtonClass}
-          action="accept"
-          onClick={() => onClose('accept')}
-        >
-          {acceptButtonLabel}
-        </DialogButton>
-      )}
+      {renderDialogButton('close')}
+      {renderDialogButton('accept')}
     </footer>
   );
 };

@@ -217,5 +217,22 @@ Drawer.defaultProps = {
   type: strings.PERMANENT
 };
 
-export default Drawer;
-export { strings };
+const DismissableDrawer = ({children, ...otherProps}) => (
+  <Drawer type={strings.DISMISSABLE} {...otherProps}>
+    {children}
+  </Drawer>
+);
+
+const ModalDrawer = ({children, ...otherProps}) => (
+  <Drawer type={strings.MODAL} {...otherProps}>
+    {children}
+  </Drawer>
+);
+
+const PermanentDrawer = ({children, ...otherProps}) => (
+  <Drawer type={strings.PERMANENT} {...otherProps}>
+    {children}
+  </Drawer>
+);
+
+export { DismissableDrawer, ModalDrawer, PermanentDrawer, strings };

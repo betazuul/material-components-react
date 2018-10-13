@@ -1,4 +1,9 @@
-export { default as Drawer, strings } from './Drawer';
+export {
+  DismissableDrawer,
+  ModalDrawer,
+  PermanentDrawer,
+  strings
+} from './Drawer';
 export { default as DrawerContent } from './DrawerContent';
 export { default as DrawerHeader } from './DrawerHeader';
 export { default as DrawerHeaderSubtitle } from './DrawerHeaderSubtitle';
