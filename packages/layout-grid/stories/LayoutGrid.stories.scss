@@ -1,0 +1,25 @@
+.demo-cell {
+  background: rgba(0, 0, 0, 0.2);
+  height: 100px;
+
+  &--alignment {
+    max-height: 50px;
+  }
+}
+
+.demo-grid {
+  background: rgba(0, 0, 0, 0.2);
+  min-width: 360px;
+
+  &--alignment {
+    max-width: 800px;
+  }
+
+  &--cell-alignment {
+    min-height: 200px;
+  }
+}
+
+.demo-inner {
+  min-height: 200px;
+}
