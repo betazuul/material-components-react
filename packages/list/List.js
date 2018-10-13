@@ -20,6 +20,10 @@ class List extends React.Component {
     this.initializeListType();
   }
 
+  componentWillUnmount() {
+    this.foundation.destroy();
+  }
+
   get adapter() {
     return {
       getListItemCount: () => this.listElements.length,
@@ -222,7 +226,7 @@ List.propTypes = {
   nonInteractive: PropTypes.bool,
   orientation: PropTypes.oneOf(['horizontal', 'vertical']),
   singleSelection: PropTypes.bool,
-  twoLine: PropTypes.bool,
+  twoLine: PropTypes.bool
 };
 
 List.defaultProps = {
@@ -233,7 +237,7 @@ List.defaultProps = {
   nonInteractive: false,
   orientation: 'vertical',
   singleSelection: false,
-  twoLine: false,
+  twoLine: false
 };
 
 export default List;

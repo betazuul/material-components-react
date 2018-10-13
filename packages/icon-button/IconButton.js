@@ -31,15 +31,16 @@ class IconButton extends React.Component {
   }
 
   get adapter() {
-    const { classList } = this.state;
-    const { onChange } = this.props;
     return {
       addClass: className => {
         if (!this.mounted) return;
-        this.setState({ classList: classList.add(className) });
+        const { classList } = this.state;
+        classList.add(className);
+        this.setState({ classList });
       },
       removeClass: className => {
         if (!this.mounted) return;
+        const { classList } = this.state;
         classList.delete(className);
         this.setState({ classList });
       },
@@ -47,6 +48,7 @@ class IconButton extends React.Component {
       setAttr: (attrName, attrValue) =>
         this.iconButtonEl.setAttribute(attrName, attrValue),
       notifyChange: event => {
+        const { onChange } = this.props;
         if (onChange) onChange(event);
       }
     };
@@ -100,17 +102,17 @@ class IconButton extends React.Component {
 
   render() {
     const {
-      children, // eslint-disable-line no-unused-vars
-      className, // eslint-disable-line no-unused-vars
+      children, 
+      className, 
       href,
       icon,
       iconOn,
       iconLabel,
       id,
-      initRipple, // eslint-disable-line no-unused-vars
+      initRipple,
       material,
       on,
-      unbounded, // eslint-disable-line no-unused-vars
+      unbounded,
       ...otherProps
     } = this.props;
 

@@ -20,7 +20,7 @@ const CardDemo = props => {
   const { actions, media, primaryAction, square, wide } = props;
   return (
     <div className="demo">
-      <Card className="card-demo">
+      <Card className="demo-card">
         <CardContent action={primaryAction}>
           {media && (
             <CardMedia
@@ -33,15 +33,15 @@ const CardDemo = props => {
               </CardMediaContent>
             </CardMedia>
           )}
-          <div className="card-demo__primary">
-            <h2 className="card-demo__title mdc-typography--headline6">
+          <div className="demo-card__primary">
+            <h2 className="demo-card__title mdc-typography--headline6">
               Our Gears
             </h2>
-            <h3 className="card-demo__subtitle mdc-typography--subtitle2">
+            <h3 className="demo-card__subtitle mdc-typography--subtitle2">
               by Gearsy Gearson
             </h3>
           </div>
-          <div className="card-demo__secondary mdc-typography--body2">
+          <div className="demo-card__secondary mdc-typography--body2">
             Check it out. We have gears turning, wheels spinning, and clocks
             ticking.
           </div>
@@ -88,12 +88,12 @@ CardDemo.defaultProps = {
 storiesOf('Card', module)
   .add('Simple', () => (
     <div className="demo">
-      <Card className="card-demo card-demo--simple">Simple</Card>
+      <Card className="demo-card demo-card--simple">Simple</Card>
     </div>
   ))
   .add('Simple Outlined', () => (
     <div className="demo">
-      <Card className="card-demo card-demo--simple" outlined>
+      <Card className="demo-card demo-card--simple" outlined>
         Simple
       </Card>
     </div>
