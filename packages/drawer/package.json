@@ -1,6 +1,6 @@
 {
   "name": "@betazuul/drawer",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "Material Component React Drawer",
   "main": "index.js",
   "repository": {
@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@betazuul/ripple": "^0.4.4",
+    "@betazuul/ripple": "^0.4.5",
     "@material/drawer": "^0.40.1",
     "@material/list": "^0.40.1"
   }

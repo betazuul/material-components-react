@@ -1,6 +1,6 @@
 {
   "name": "@betazuul/dialog",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "Material Component React Dialog",
   "main": "index.js",
   "repository": {
@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@betazuul/ripple": "^0.4.4",
+    "@betazuul/ripple": "^0.4.5",
     "@material/dialog": "^0.40.1",
     "@material/dom": "^0.40.0"
   }
