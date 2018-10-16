@@ -1,6 +1,6 @@
 import React from 'react';
-import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import { MDCDialogFoundation, util } from '@material/dialog/dist/mdc.dialog';
 import { closest, matches } from '@material/dom/dist/mdc.dom';
 import createFocusTrap from 'focus-trap';
