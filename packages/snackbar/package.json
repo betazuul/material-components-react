@@ -1,6 +1,6 @@
 {
   "name": "@betazuul/snackbar",
-  "version": "0.4.6",
+  "version": "0.4.7",
   "description": "Material Component React Snackbar",
   "main": "index.js",
   "repository": {

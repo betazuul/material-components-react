@@ -1,6 +1,6 @@
 {
   "name": "@betazuul/button",
-  "version": "0.4.6",
+  "version": "0.4.7",
   "description": "Material Component React Button",
   "main": "index.js",
   "repository": {
@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@betazuul/ripple": "^0.4.6",
+    "@betazuul/ripple": "^0.4.7",
     "@material/button": "^0.40.1"
   }
 }
