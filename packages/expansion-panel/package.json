@@ -1,0 +1,15 @@
+{
+  "name": "@betazuul/expansion-panel",
+  "version": "0.4.6",
+  "description": "Material Component React Expansion Panel",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/betazuul/material-components-react.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@material/base": "^0.41.0"
+  }
+}

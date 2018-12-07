@@ -25,6 +25,7 @@ module.exports = (baseConfig, env, defaultConfig) => {
             path.resolve(__dirname, '../packages/checkbox/node_modules'),
             path.resolve(__dirname, '../packages/dialog/node_modules'),
             path.resolve(__dirname, '../packages/drawer/node_modules'),
+            path.resolve(__dirname, '../packages/expansion-panel/node_modules'),
             path.resolve(__dirname, '../packages/form-field/node_modules'),
             path.resolve(__dirname, '../packages/icon-button/node_modules'),
             path.resolve(__dirname, '../packages/layout-grid/node_modules'),
