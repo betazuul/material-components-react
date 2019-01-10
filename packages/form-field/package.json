@@ -1,6 +1,6 @@
 {
   "name": "@betazuul/form-field",
-  "version": "0.4.7",
+  "version": "0.4.8",
   "description": "Material Component React Form Field",
   "main": "index.js",
   "repository": {
@@ -11,5 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "@material/form-field": "^0.40.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

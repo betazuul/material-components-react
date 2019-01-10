@@ -1,6 +1,6 @@
 {
   "name": "@betazuul/card",
-  "version": "0.4.7",
+  "version": "0.4.8",
   "description": "Material Component React Card",
   "main": "index.js",
   "repository": {
@@ -10,7 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@betazuul/ripple": "^0.4.7",
+    "@betazuul/ripple": "^0.4.8",
     "@material/card": "^0.40.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

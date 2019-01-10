@@ -1,6 +1,6 @@
 {
   "name": "@betazuul/expansion-panel",
-  "version": "0.4.7",
+  "version": "0.4.8",
   "description": "Material Component React Expansion Panel",
   "main": "index.js",
   "repository": {
@@ -11,5 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "@material/base": "^0.41.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
