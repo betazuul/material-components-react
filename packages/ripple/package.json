@@ -1,6 +1,6 @@
 {
   "name": "@betazuul/ripple",
-  "version": "0.4.8",
+  "version": "0.4.9",
   "description": "Material Component React Ripple",
   "main": "dist/index.js",
   "repository": {

@@ -1,6 +1,6 @@
 {
   "name": "@betazuul/menu-surface",
-  "version": "0.4.8",
+  "version": "0.4.9",
   "description": "Material Component React Menu Surface",
   "main": "dist/index.js",
   "repository": {
