@@ -49,7 +49,7 @@
     "test": "node test/test.js",
     "pretest": "npm run build",
     "start": "start-storybook -p 9001 -c .storybook",
-    "version": "lerna publish --skip-git --skip-npm"
+    "version-old": "lerna publish --skip-git --skip-npm"
   },
   "dependencies": {}
 }
